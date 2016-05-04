@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>扇形导航</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="fixed-nav">
+    <div class="item open" data-deg="0"></div>
+    <div class="item refresh" data-deg="22.5"></div>
+    <div class="item prev" data-deg="45"></div>
+    <div class="item full" data-deg="67.5"></div>
+    <div class="item close" data-deg="90"></div>
+    <div class="item home"></div>
+</div>
+<script>
+    var home = document.querySelector('.item.home');
+    var items = document.querySelectorAll('.item[data-deg]');
+    home.addEventListener('click', function () {
+        home.classList.toggle('active');
+        [].forEach.call(items, function (e) {
+            if (e.classList.contains('active')) {
+                e.classList.remove('active');
+                e.style.right = '';
+                e.style.bottom = '';
+            } else {
+                e.classList.add('active');
+                e.style.right = e.dataset.right;
+                e.style.bottom = e.dataset.bottom;
+            }
+        });
+    });
+
+    //设置 展开后的位置
+    [].forEach.call(items, function (e) {
+        var deg = e.dataset.deg;
+        var style;
+        if (deg === '0') {
+            e.dataset.right = '6rem';
+            e.dataset.bottom = '0';
+        } else if (deg === '90') {
+            e.dataset.right = '0';
+            e.dataset.bottom = '6rem';
+        } else if (deg !== undefined) {
+            e.dataset.right = (Math.cos(0.017453293 * parseFloat(deg)) * 6) + 'rem';
+            e.dataset.bottom = (Math.sin(0.017453293 * parseFloat(deg)) * 6) + 'rem';
+        }
+    });
+
+</script>
+</body>
+</html>

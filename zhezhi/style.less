@@ -1,0 +1,100 @@
+//动画
+@keyframes openFrame {
+  0% {
+    -webkit-transform: rotateX(-180deg);
+  }
+  25% {
+    -webkit-transform: rotateX(30deg);
+  }
+  50% {
+    -webkit-transform: rotateX(-15deg);
+  }
+  75% {
+    -webkit-transform: rotateX(8deg);
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+  }
+}
+
+@keyframes closeFrame {
+  0% {
+    -webkit-transform: rotateX(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+@-webkit-keyframes openFrame {
+  0% {
+    -webkit-transform: rotateX(-180deg);
+  }
+  25% {
+    -webkit-transform: rotateX(30deg);
+  }
+  50% {
+    -webkit-transform: rotateX(-15deg);
+  }
+  75% {
+    -webkit-transform: rotateX(8deg);
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+  }
+}
+
+@-webkit-keyframes closeFrame {
+  0% {
+    -webkit-transform: rotateX(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+#warp {
+  width: 300px;
+  margin: 20px auto;
+  perspective: 500px;
+
+  //大标题
+  h2 {
+    line-height: 40px;
+    height: 40px;
+    text-align: center;
+    margin: 0;
+    background: darkseagreen;
+    position: relative;
+    z-index: 10;
+  }
+
+  //小标题
+  strong {
+    text-indent: 2em;
+    font-weight: normal;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    background: #ddd;
+    border-top: 2px solid #fff;
+  }
+
+  div {
+    transform-style: preserve-3d;
+    transform-origin: top;
+    transform: rotateX(-180deg);
+  }
+  &.open div {
+   // transform: rotateX(0deg);
+    -webkit-animation: 1s openFrame ease-in;
+    animation: 1s openFrame ease-in;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  &.close div {
+   // transform: rotateX(-180deg);
+    -webkit-animation: 0.6s closeFrame ease;
+    animation: 0.6s closeFrame ease;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+}

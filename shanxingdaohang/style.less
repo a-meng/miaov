@@ -1,0 +1,50 @@
+/*固定定位*/
+.fixed-nav {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+}
+
+.fixed-nav .item {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-size: contain;
+  background-color: transparent;
+  transition: all .2s;
+  transform: rotate(0deg);
+  border-radius: 50%;
+  &.active {
+    transform: rotate(360deg);
+  }
+}
+
+.fixed-nav .item.open {
+  background-image: url('img/open.png');
+}
+
+.fixed-nav .item.refresh {
+  transition-delay: .1s;
+  background-image: url('img/refresh.png');
+}
+
+.fixed-nav .item.prev {
+  transition-delay: .15s;
+  background-image: url('img/prev.png');
+}
+
+.fixed-nav .item.full {
+  transition-delay: .2s;
+  background-image: url('img/full.png');
+}
+
+.fixed-nav .item.close {
+   transition-delay: .25s;
+  background-image: url('img/close.png');
+}
+
+.fixed-nav .item.home {
+  background-image: url('img/home.png');
+}

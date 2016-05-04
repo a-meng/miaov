@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>折纸效果</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="warp">
+    <h2>点击收起展开</h2>
+    <div data-lv="1">
+        <strong>子标题</strong>
+        <div data-lv="2">
+            <strong>子标题</strong>
+            <div data-lv="3">
+                <strong>子标题</strong>
+                <div data-lv="4">
+                    <strong>子标题</strong>
+                    <div data-lv="5">
+                        <strong>子标题</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var Dwarp = document.querySelector('#warp');
+    var Dlist = Dwarp.querySelectorAll('#warp div');
+    document.querySelector('#warp h2').addEventListener('click', function () {
+        var len = Dlist.length * 0.1;
+        //设置延迟,展开收起class
+        if (Dwarp.classList.contains('open')) {
+            //收起
+            [].forEach.call(Dlist, function (e, i) {
+                e.style.animationDelay = (len - (e.dataset.lv * 0.1)) + 's';
+                e.style.webkitAnimationDelay = (len - (e.dataset.lv * 0.1)) + 's';
+            });
+            Dwarp.className = 'close';
+        } else {
+            //展开
+            [].forEach.call(Dlist, function (e, i) {
+                e.style.animationDelay = ((e.dataset.lv * 0.1)) + 's';
+                e.style.webkitAnimationDelay = ((e.dataset.lv * 0.1)) + 's';
+            });
+            Dwarp.className = 'open';
+        }
+    });
+</script>
+</body>
+</html>

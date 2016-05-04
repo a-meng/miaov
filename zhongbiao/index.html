@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时钟</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<h2></h2>
+<div id="clock">
+    <span class="h" style="transform:rotate(10deg);"></span>
+    <span class="m" style="transform:rotate(20deg);"></span>
+    <span class="s" style="transform:rotate(40deg);"></span>
+</div>
+<script>
+    var $clock = document.querySelector('#clock');
+    //指针
+    var html = '<span class="needle h"></span>' +
+            '<span class="needle m"></span>' +
+            '<span class="needle s"></span>';
+    //刻度
+    var flags = '', deg, flagType;
+    for (var i = 0; i < 60; i++) {
+        deg = '-webkit-transform:rotate(' + i * 6 + 'deg);transform:rotate(' + i * 6 + 'deg);';
+        if (i % 5 === 0) {
+            html += '<i class="ii" style="' + deg + '"></i>';
+        } else {
+            html += '<i style="' + deg + '"></i>';
+        }
+
+    }
+
+    //数字
+    for (var i = 1; i < 13; i++) {
+        deg = '-webkit-transform:rotate(' + i * 30 + 'deg);transform:rotate(' + i * 30 + 'deg);';
+        html += '<span class="number" style="' + deg + '">' + i + '</span>'
+    }
+    $clock.innerHTML = html;
+    (function () {
+        //时间对象
+        var D = {
+            h: null, m: null, s: null, full: null
+        }
+
+        function updateD() {
+            var now = new Date();
+            var h = now.getDate(),
+                    _h = h > 9 ? h : '0' + h,
+                    m = now.getMinutes(),
+                    _m = m > 9 ? m : '0' + m,
+                    s = now.getSeconds(),
+                    _s = s > 9 ? s : '0' + s;
+            D.h=h;D.m=m;D.s=s;
+            D.full = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + _h + ':' + _m + ':' + _s;
+        }
+
+        var $h2 = document.querySelector('h2');
+        var $h = document.querySelector('.needle.h'),
+                $m = document.querySelector('.needle.m'),
+                $s = document.querySelector('.needle.s');
+        setInterval(function () {
+            updateD();
+            $h2.innerHTML = D.full;
+
+            $h.style.transform = 'rotate(' + D.h / 12 * 360 + 'deg)';
+            $h.style.webkitTransform = 'rotate(' + D.h / 12 * 360 + 'deg)';
+
+            $m.style.transform = 'rotate(' + D.m / 60 * 360 + 'deg)';
+            $m.style.webkitTransform = 'rotate(' + D.m / 60 * 360 + 'deg)';
+
+            $s.style.transform = 'rotate(' + D.s / 60 * 360 + 'deg)';
+            $s.style.webkitTransform = 'rotate(' + D.s / 60 * 360 + 'deg)';
+
+        }, 1000);
+    })();
+</script>
+</body>
+</html>

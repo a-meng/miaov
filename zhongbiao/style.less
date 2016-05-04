@@ -1,0 +1,68 @@
+h2 {
+  text-align: center;
+  margin: 0 auto;
+  font-weight: normal;
+}
+
+/*css3时钟样式*/
+#clock {
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  margin: 50px auto;
+  //刻度
+  i {
+    position: absolute;
+    width: 2px;
+    height: 5px;
+    background: gray;
+    top: 0;
+    left: 99px;
+    transform-origin: 0 100px;
+    &.ii {
+      height: 8px;
+    }
+  }
+  //指针
+  .needle {
+    position: absolute;
+    left: 98px;
+    bottom: 100px;
+    transform-origin: center bottom;
+    transition: .1s all;
+    &.h {
+      width: 3px;
+      height: 30px;
+      background: #747474;
+    }
+    &.m {
+      width: 2px;
+      height: 50px;
+      background: #ddd;
+    }
+    &.s {
+      height: 70px;
+      width: 1px;
+      background: orange;
+      left: 99px;
+    }
+  }
+  //数字
+  .number{
+    position: absolute;
+    width: 2rem;
+    top: 7px;
+    left: 100px;
+    margin-left: -1rem;
+    text-align: center;
+    transform-origin: 15px 93px;
+  }
+}
+
+
+
+
+
+
