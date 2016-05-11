@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>滑动效果</title>
+    <style>
+        /*页面基本样式*/
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        /*滑动组件基本样式*/
+        #scroll {
+            overflow: hidden;
+        }
+
+        #scroll > ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            display: none;
+        }
+
+        #scroll > ul > li {
+            float: left;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        /*组件尺寸,位置*/
+        #scroll {
+            width: 320px;
+            height: 110px;
+            margin: 20px auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="scroll">
+    <ul>
+        <li><img src="img/1.jpg"></li>
+        <li><img src="img/2.jpg"></li>
+        <li><img src="img/3.jpg"></li>
+        <li><img src="img/4.jpg"></li>
+    </ul>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+
+        var $scroll = $('#scroll');
+        var $ul = $('#scroll>ul');
+        var $li = $('#scroll>ul>li');
+        var W = $scroll.width(), H = $scroll.height();
+
+        //样式初始化
+        $li.width(W);
+        $ul.width(Math.ceil(W * $li.length)).show();
+        $ul[0].style.marginLeft = '0px';
+
+        //添加左右滑动效果
+        // 相关事件：touchstart,touchmove,touchend
+        //事件对象：e.originalEvent.touches
+        var touchA, ulA;//touch,ul的初始位置
+        $scroll.on('touchstart', function (e) {
+            var ev = e.originalEvent.touches[0];
+            touchA = ev.pageX;
+            ulA = parseInt($ul[0].style.marginLeft);
+        });
+        $scroll.on('touchmove', function (e) {
+            var ev = e.originalEvent.touches[0];
+            var len = ev.pageX - touchA;//移动的位置，（>0表示 → <0表示：←）
+            var old = parseInt($ul[0].style.marginLeft);
+            $ul[0].style.marginLeft = (ulA + len) + 'px';
+        });
+        $scroll.on('touchend', function (e) {
+            var ev = e.originalEvent.touches[0];
+            //手指操作结束后 画面调整
+            var left = parseInt($ul[0].style.marginLeft);
+            var page = Math.round(-left / W);
+            if (page == 4) {
+                page = 3;
+            }
+            $ul.animate({
+                marginLeft: -page * W
+            });
+        });
+    });
+</script>
+</body>
+</html>
