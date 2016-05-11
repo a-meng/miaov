@@ -61,6 +61,7 @@
   background: darkseagreen;
   position: relative;
   z-index: 10;
+  color: #fff;
 }
 #warp strong {
   text-indent: 2em;
