@@ -63,38 +63,68 @@
         var $ul = $('#scroll>ul');
         var $li = $('#scroll>ul>li');
         var W = $scroll.width(), H = $scroll.height();
-
+        var LEN = $li.length;
         //样式初始化
         $li.width(W);
-        $ul.width(Math.ceil(W * $li.length)).show();
+        $ul.width(Math.ceil(W * LEN)).show();
         $ul[0].style.marginLeft = '0px';
 
         //添加左右滑动效果
         // 相关事件：touchstart,touchmove,touchend
         //事件对象：e.originalEvent.touches
         var touchA, ulA;//touch,ul的初始位置
+        var touchstartTime;
         $scroll.on('touchstart', function (e) {
             var ev = e.originalEvent.touches[0];
             touchA = ev.pageX;
+            $ul.stop();//立即停止已有动画，防止动画叠加
             ulA = parseInt($ul[0].style.marginLeft);
+            touchstartTime=Date.now();
         });
         $scroll.on('touchmove', function (e) {
             var ev = e.originalEvent.touches[0];
-            var len = ev.pageX - touchA;//移动的位置，（>0表示 → <0表示：←）
-            var old = parseInt($ul[0].style.marginLeft);
-            $ul[0].style.marginLeft = (ulA + len) + 'px';
+            var away = ev.pageX - touchA;//移动的位置，（>0表示 → <0表示：←）
+            var next = ulA + away;
+
+            if (next > 0 || -next > W * (LEN - 1)) {
+                //边界减小移动比率
+                next = ulA + away / 3;
+            }
+            $ul[0].style.marginLeft = next + 'px';
+
+
         });
         $scroll.on('touchend', function (e) {
-            var ev = e.originalEvent.touches[0];
+            var ev = e.originalEvent.changedTouches[0];//这个地方touches数组是空的了 改用changeTouches
             //手指操作结束后 画面调整
             var left = parseInt($ul[0].style.marginLeft);
-            var page = Math.round(-left / W);
-            if (page == 4) {
-                page = 3;
+            var page = -left / W;
+            var away = ev.pageX - touchA;//（>0表示 → <0表示：←）
+            console.info(Date.now()-touchstartTime,'away',away);
+
+            if(away>0){
+                if(Date.now()-touchstartTime<300&&away>30){
+                    page=parseInt(page)-1;
+                }else{
+                    page=Math.round(page);
+                }
+            }else if(away<0){
+                if(Date.now()-touchstartTime<300&&-away>30){
+                    page=parseInt(page)+1;
+                }else{
+                    page=Math.round(page);
+                }
             }
+
+            if (page > 3) {
+                page = 3;
+            } else if (page < 0) {
+                page = 0
+            }
+
             $ul.animate({
                 marginLeft: -page * W
-            });
+            }, 300);
         });
     });
 </script>
