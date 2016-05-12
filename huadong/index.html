@@ -79,7 +79,7 @@
             touchA = ev.pageX;
             $ul.stop();//立即停止已有动画，防止动画叠加
             ulA = parseInt($ul[0].style.marginLeft);
-            touchstartTime=Date.now();
+            touchstartTime = Date.now();
         });
         $scroll.on('touchmove', function (e) {
             var ev = e.originalEvent.touches[0];
@@ -100,19 +100,19 @@
             var left = parseInt($ul[0].style.marginLeft);
             var page = -left / W;
             var away = ev.pageX - touchA;//（>0表示 → <0表示：←）
-            console.info(Date.now()-touchstartTime,'away',away);
+            console.info(Date.now() - touchstartTime, 'away', away);
 
-            if(away>0){
-                if(Date.now()-touchstartTime<300&&away>30){
-                    page=parseInt(page)-1;
-                }else{
-                    page=Math.round(page);
+            if (away > 0) {
+                if (Date.now() - touchstartTime < 300 && away > 30) {
+                    page = parseInt(page) - 1;
+                } else {
+                    page = Math.round(page);
                 }
-            }else if(away<0){
-                if(Date.now()-touchstartTime<300&&-away>30){
-                    page=parseInt(page)+1;
-                }else{
-                    page=Math.round(page);
+            } else if (away < 0) {
+                if (Date.now() - touchstartTime < 300 && -away > 30) {
+                    page = parseInt(page) + 1;
+                } else {
+                    page = Math.round(page);
                 }
             }
 
