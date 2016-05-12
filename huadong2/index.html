@@ -50,8 +50,8 @@
         var $scroll = $('.scroll');
         var $contain = $('.scroll-contain');
         var $slider = $('.scroll-slider');
+        var contain_H = $contain.height(), scroll_H = $scroll.height();
         $contain[0].style.marginTop = 0;
-
         //内容上下滚动
         var touchY, top, speedY, pageY; //touchstart的Y坐标，$contain的marginTop,手指离开瞬间的速度
         var bufInterval;//缓冲动画
@@ -65,9 +65,13 @@
         $scroll.on('touchmove', function (e) {
             var ev = e.originalEvent.touches[0];
             var away = touchY - ev.pageY;
-            $contain[0].style.marginTop = (top - away) + 'px';
-            speedY = ev.pageY - pageY;
-            pageY = ev.pageY;
+            var newtop = top - away;
+
+            if (-(contain_H - scroll_H) < newtop && newtop < 1) {
+                $contain[0].style.marginTop = (top - away) + 'px';
+                speedY = ev.pageY - pageY;
+                pageY = ev.pageY;
+            }
         });
         $scroll.on('touchend', function (e) {
             var ev = e.originalEvent.changedTouches[0];
@@ -76,11 +80,9 @@
             clearInterval(bufInterval);
             bufInterval = setInterval(function () {
                 var old = parseInt($contain[0].style.marginTop);
-                if (Math.abs(speedY) > 1) {
+                if (Math.abs(speedY) > 1 && -(contain_H - scroll_H) < old && old < 1) {
                     speedY = speedY * 0.9;
-                    console.info('speedY:',speedY);
-                    $contain[0].style.marginTop = (old + speedY*1.5) + 'px';
-
+                    $contain[0].style.marginTop = (old + speedY * 1.5) + 'px';
                 } else {
                     clearInterval(bufInterval);
                 }
