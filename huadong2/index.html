@@ -43,53 +43,83 @@
 </div>
 <script src="jquery2.1.js"></script>
 <script>
-    document.addEventListener('touchmove', function (e) {
-        e.preventDefault();
-    });
     $(function () {
+        //一些变量
         var $scroll = $('.scroll');
         var $contain = $('.scroll-contain');
         var $slider = $('.scroll-slider');
-        var contain_H = $contain.height(), scroll_H = $scroll.height();
-        $contain[0].style.marginTop = 0;
-        //内容上下滚动
-        var touchY, top, speedY, pageY; //touchstart的Y坐标，$contain的marginTop,手指离开瞬间的速度
+        //各元素高度
+        var elHeight = {
+            contain: $contain.height(),
+            scroll: $scroll.height(),
+            slider: null
+        }
+        elHeight.slider = elHeight.scroll / elHeight.contain * elHeight.scroll;
+        if (elHeight.slider < 50) {
+            elHeight.slider = 50;
+        }
+
+
+        $slider[0].style.height = elHeight.slider + 'px';
+
+        //上下滚动关键变量
+        var touchstartTop, containTop = 0;
+        var touchY, pageY; //touchstart的Y坐标，上一次的pageY属性值用于计算speedY
+        var speedY = 0;//手指离开瞬间的速度
         var bufInterval;//缓冲动画
         $scroll.on('touchstart', function (e) {
-
             var ev = e.originalEvent.touches[0];
             touchY = ev.pageY;
-            top = parseInt($contain[0].style.marginTop);
             pageY = ev.pageY;
+            touchstartTop = parseInt($contain[0].style.marginTop || 0);
+            containTop = touchstartTop;
         });
         $scroll.on('touchmove', function (e) {
             var ev = e.originalEvent.touches[0];
-            var away = touchY - ev.pageY;
-            var newtop = top - away;
-
-            if (-(contain_H - scroll_H) < newtop && newtop < 1) {
-                $contain[0].style.marginTop = (top - away) + 'px';
-                speedY = ev.pageY - pageY;
-                pageY = ev.pageY;
-            }
+            var away = ev.pageY - pageY;
+            speedY = away * 1.2;
+            move(away);
+            pageY = ev.pageY;
         });
         $scroll.on('touchend', function (e) {
             var ev = e.originalEvent.changedTouches[0];
             //根据最后瞬间速度 让$contain有个缓冲效果
-            console.info(speedY);
             clearInterval(bufInterval);
             bufInterval = setInterval(function () {
-                var old = parseInt($contain[0].style.marginTop);
-                if (Math.abs(speedY) > 1 && -(contain_H - scroll_H) < old && old < 1) {
-                    speedY = speedY * 0.9;
-                    $contain[0].style.marginTop = (old + speedY * 1.5) + 'px';
-                } else {
+                speedY = speedY * 0.9;
+                if (move(speedY) == false) {
                     clearInterval(bufInterval);
                 }
             }, 20);
         });
 
+        //根据内容containTop值 更新滚动条的位置
+        function sliderMove(containTop) {
+            var H1 = elHeight.scroll - elHeight.slider;//滚动条 可滚动的高度
+            var H2 = elHeight.contain - elHeight.scroll;//内容 可滚动的高度
+            var sliderTop = H1 / H2 * containTop;
+            $slider[0].style.marginTop = -sliderTop + 'px';
+        }
 
+        //根据
+        function move(away) {
+            var top = containTop + away;
+            var min = -(elHeight.contain - elHeight.scroll);
+            var max = 0;
+            if (Math.abs(away) < 1) {
+                return false;
+            } else {
+                if (top < min) {
+                    top = min;
+                } else if (top > max) {
+                    top = max;
+                }
+                $contain[0].style.marginTop = top + 'px';
+                containTop = top;
+                sliderMove(top);//移动滑块
+                return true;
+            }
+        }
     });
 
     //$contain内填充一点内容 方便演示
@@ -99,6 +129,11 @@
     }
     contain_html += '</ul>';
     $('.scroll-contain').html(contain_html);
+
+    /*禁止微信上默认上下滑动的效果*/
+    document.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+    });
 </script>
 </body>
 </html>
