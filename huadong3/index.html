@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <style>
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            padding: 0;
+            margin: 0;
+        }
+
+        #scroll {
+            width: 250px;
+            height: 150px;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #scroll > .contain {
+            display: none;
+        }
+
+        #scroll > .contain > li {
+            float: left;
+        }
+
+        #scroll > .btns {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            text-align: center;
+        }
+
+        #scroll > .btns i {
+            display: inline-block;
+            background: gray;
+            width: .7rem;
+            height: .7rem;
+            margin: .2rem;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<div id="scroll">
+    <ul class="contain">
+        <li><img src="img/1.jpg"></li>
+        <li><img src="img/2.jpg"></li>
+        <li><img src="img/3.jpg"></li>
+        <li><img src="img/4.jpg"></li>
+    </ul>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+        var $scroll = $('#scroll');
+        var $contain = $('.contain');
+        var LEN = $('.contain>li').length;
+        var scroll_w = $scroll.width();
+        var index = 0;
+
+        //html结构 初始化
+        var btns = '<div class="btns">';
+        for (var i = LEN; i > 0; i--) {
+            btns += '<i></i>';
+        }
+        btns += '</div>';
+        $scroll.append(btns);
+        $contain.append($contain.html());
+
+        $contain.children('li').width(scroll_w);
+        $contain[0].style.width = LEN * scroll_w * 2 + 'px';
+        $contain[0].style.transform = 'translate3d(-' + scroll_w * LEN + 'px,0,0)';
+        $contain.show();//html结构设置完了再显示，免得画面闪动
+
+
+        /*
+         * 滑动
+         * */
+        var touchstartX, touchstartLeft = scroll_w * LEN;
+        $scroll.on('touchstart', function (e) {
+            var ev = e.originalEvent.touches[0];
+            touchstartX = ev.pageX;
+
+        });
+        $scroll.on('touchmove', function (e) {
+            var ev = e.originalEvent.touches[0];
+            var away = ev.pageY - pageY;
+
+        });
+        $scroll.on('touchend', function (e) {
+            var ev = e.originalEvent.changedTouches[0];
+
+        });
+    });
+
+
+</script>
+</body>
+</html>
