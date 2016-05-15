@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>滑动效果</title>
+    <title>滑动效果1</title>
     <style>
         /*页面基本样式*/
         html, body {
@@ -98,21 +98,22 @@
             var ev = e.originalEvent.changedTouches[0];//这个地方touches数组是空的了 改用changeTouches
             //手指操作结束后 画面调整
             var left = parseInt($ul[0].style.marginLeft);
-            var page = -left / W;
-            var away = ev.pageX - touchA;//（>0表示 → <0表示：←）
+            var page = -parseInt(left / W);
+            var away = ev.pageX - touchA;
+
             console.info(Date.now() - touchstartTime, 'away', away);
 
             if (away > 0) {
-                if (Date.now() - touchstartTime < 300 && away > 30) {
-                    page = parseInt(page) - 1;
-                } else {
-                    page = Math.round(page);
+                //表示 →
+                console.info('->')
+                if (Date.now() - touchstartTime > 300 || away < 30) {
+                    page++;
                 }
             } else if (away < 0) {
-                if (Date.now() - touchstartTime < 300 && -away > 30) {
-                    page = parseInt(page) + 1;
-                } else {
-                    page = Math.round(page);
+                //表示：←
+                console.info('<-')
+                if (Date.now() - touchstartTime < 300 && away < W - 30) {
+                    page++;
                 }
             }
 
