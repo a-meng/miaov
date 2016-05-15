@@ -52,6 +52,11 @@
             height: .7rem;
             margin: .2rem;
             border-radius: 50%;
+            opacity: .7;
+        }
+
+        #scroll > .btns i.active {
+            background: red;
         }
     </style>
 </head>
@@ -76,7 +81,7 @@
         //html结构 初始化
         var btns = '<div class="btns">';
         for (var i = LEN; i > 0; i--) {
-            btns += '<i></i>';
+            btns += (i == LEN ? '<i class="active"></i>' : '<i></i>');
         }
         btns += '</div>';
         $scroll.append(btns);
@@ -84,31 +89,103 @@
 
         $contain.children('li').width(scroll_w);
         $contain[0].style.width = LEN * scroll_w * 2 + 'px';
-        $contain[0].style.transform = 'translate3d(-' + scroll_w * LEN + 'px,0,0)';
+        translateX(-scroll_w * LEN);
         $contain.show();//html结构设置完了再显示，免得画面闪动
-
 
         /*
          * 滑动
          * */
-        var touchstartX, touchstartLeft = scroll_w * LEN;
+        var touchstartX, touchstartLeft, animHandler;
         $scroll.on('touchstart', function (e) {
             var ev = e.originalEvent.touches[0];
+            clearInterval(animHandler);
+
+            resetPage();
             touchstartX = ev.pageX;
+            touchstartLeft = translateX();
 
         });
         $scroll.on('touchmove', function (e) {
             var ev = e.originalEvent.touches[0];
-            var away = ev.pageY - pageY;
+            var away = ev.pageX - touchstartX;
 
+            translateX(touchstartLeft + away);
         });
         $scroll.on('touchend', function (e) {
             var ev = e.originalEvent.changedTouches[0];
+            var away = ev.pageX - touchstartX;
 
+            if (away > 0) {
+                moveTo('right');
+            } else {
+                moveTo('left');
+            }
         });
+
+        //设置or获取 $contain 的 translateX值
+        function translateX(len) {
+            if (len === undefined) {
+                var transform = $contain[0].style.transform;
+                return parseFloat(transform.match(/\((-?.+)px\)/)[1]);
+            } else {
+                $contain[0].style.transform = 'translateX(' + len + 'px)';
+            }
+        }
+
+        //移动动画
+        function moveTo(direction) {
+            var left = translateX();
+            var index = Math.abs(parseInt(left / scroll_w));
+            var off = Math.abs(left % scroll_w);
+            console.info('moveTo:', direction, 'index:', index, 'off', off);
+
+            if (direction == 'left') {
+                console.info(off > scroll_w / 3)
+                if (off > scroll_w / 3) {
+                    index++;
+                }
+            } else if ('right') {
+                if (off > scroll_w * 2 / 3) {
+                    index++;
+                }
+            }
+            console.info('next:', index);
+
+            //动画
+            var endLeft = parseInt(-index * scroll_w);
+            animHandler = setInterval(function () {
+                if (Math.abs(endLeft - left) < 3) {
+                    translateX(endLeft);
+                    clearInterval(animHandler);
+                } else {
+                    left = endLeft > left ? left + 3 : left - 3;
+                    translateX(left);
+                }
+            }, 10);
+
+            //页签更新
+            btnsActive(index);
+        }
+
+        //判断当前页面，如果在两头 挪到中间
+        function resetPage() {
+            var left = -translateX();
+            if (left < scroll_w) {
+                left += scroll_w * LEN;
+                translateX(-left);
+            } else if (left > scroll_w * (2 * LEN - 2)) {
+                left -= scroll_w * (LEN);
+                translateX(-left);
+            }
+        }
+
+        var $btns = $('#scroll>.btns i');
+
+        function btnsActive(index) {
+            $btns.removeClass('active');
+            $btns.eq(index > LEN - 1 ? index - LEN : index).addClass('active');
+        }
     });
-
-
 </script>
 </body>
 </html>
