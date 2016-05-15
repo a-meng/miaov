@@ -99,7 +99,7 @@
         $scroll.on('touchstart', function (e) {
             var ev = e.originalEvent.touches[0];
             clearInterval(animHandler);
-
+            clearInterval(autoScrollHandler);
             resetPage();
             touchstartX = ev.pageX;
             touchstartLeft = translateX();
@@ -120,7 +120,12 @@
             } else {
                 moveTo('left');
             }
+            autoScroll();
         });
+
+        //自动滑动
+        var autoScrollHandler;
+        autoScroll();
 
         //设置or获取 $contain 的 translateX值
         function translateX(len) {
@@ -132,22 +137,31 @@
             }
         }
 
-        //移动动画
-        function moveTo(direction) {
+        //移动动画 方向，是否强制翻页required
+        function moveTo(direction, required) {
             var left = translateX();
             var index = Math.abs(parseInt(left / scroll_w));
             var off = Math.abs(left % scroll_w);
             console.info('moveTo:', direction, 'index:', index, 'off', off);
 
             if (direction == 'left') {
-                console.info(off > scroll_w / 3)
-                if (off > scroll_w / 3) {
-                    index++;
+                if (required) {
+                    index++
+                } else {
+                    if (off > scroll_w / 3) {
+                        index++;
+                    }
                 }
+
             } else if ('right') {
-                if (off > scroll_w * 2 / 3) {
-                    index++;
+                if (required) {
+                    index--;
+                } else {
+                    if (off > scroll_w * 2 / 3) {
+                        index++;
+                    }
                 }
+
             }
             console.info('next:', index);
 
@@ -184,6 +198,13 @@
         function btnsActive(index) {
             $btns.removeClass('active');
             $btns.eq(index > LEN - 1 ? index - LEN : index).addClass('active');
+        }
+
+        function autoScroll() {
+            autoScrollHandler = setInterval(function () {
+                resetPage();
+                moveTo('left', true);
+            }, 5000);
         }
     });
 </script>
