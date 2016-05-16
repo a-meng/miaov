@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>相册</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div id="del" class="btn hidden">删除</div>
+    <div class="title">相册</div>
+    <div id="choose" class="btn">选择</div>
+</header>
+<div class="photos">
+    <img src="video/1.jpg"/>
+    <img src="video/2.jpg"/>
+    <img src="video/3.jpg"/>
+    <img src="video/4.jpg"/>
+    <img src="video/5.jpg"/>
+    <img src="video/6.jpg"/>
+    <img src="video/7.jpg"/>
+    <img src="video/8.jpg"/>
+    <img src="video/9.jpg"/>
+    <img src="video/10.jpg"/>
+    <img src="video/11.jpg"/>
+    <img src="video/12.jpg"/>
+    <img src="video/13.jpg"/>
+    <img src="video/14.jpg"/>
+    <img src="video/15.jpg"/>
+    <img src="video/16.jpg"/>
+</div>
+<footer>
+    <div class="btn">
+        相机相册
+    </div>
+    <div class="btn">
+        所有相册
+    </div>
+</footer>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+        var $choose = $('#choose'), $del = $('#del');
+        var $photos = $('.photos');
+        setPosition();
+        // 'edit','cancel' 两种状态,默认 cancel状态 （不能直接改 ，通过setStatue操作）
+        var status = 'cancel';
+
+        $choose.on('touchend', function () {
+            setStatue('change');
+        });
+
+        $photos.on('touchend', 'img', function () {
+            if (status == 'edit') {
+                $(this).toggleClass('selected');
+            }
+        });
+        $del.on('touchend', function () {
+            if (!$(this).hasClass('hidden')) {
+                $photos.find('img.selected').remove();
+                setPosition();
+            }
+        });
+
+        function setStatue(str) {
+            if (str == 'change') {
+                status = status == 'cancel' ? 'edit' : 'cancel';
+            } else {
+                status = str;
+            }
+            if (status == 'cancel') {
+                $del.addClass('hidden');
+                $choose.html('选择');
+                $photos.find('img.selected').removeClass('selected');
+            } else if (status == 'edit') {
+                $del.removeClass('hidden');
+                $choose.html('取消');
+            }
+        }
+        function setPosition(){
+            $photos.children('img').each(function (i) {
+                var w=document.body.offsetWidth/3;
+                var row=parseInt(i/3);
+                var col=i%3;
+                this.style.top=row*w+'px';
+                this.style.left=col*w+'px';
+                console.info(row,'-',col);
+
+            });
+        }
+    });
+</script>
+</body>
+</html>
