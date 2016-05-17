@@ -92,6 +92,8 @@
     </div>
 </div>
 <script src="jquery2.1.js"></script>
+<script src="vue.js"></script>
+<script src="../js/web1.main.js"></script>
 <script>
     $.fn.extend({
         animateCss: function (animationName, callback) {
@@ -107,6 +109,7 @@
         var $pages = $('.page');
         var $welcome = $('#welcome');
         var $home = $('#home');
+        var $submit = $('#submit');
 
         /*
          * $welcome页动画
@@ -132,9 +135,14 @@
         /*
          *首页
          * */
-        $home.on('click','button[type=submit]', function () {
-
+        $home.on('click', 'button[type=submit]', function () {
+            $home.addClass('before').removeClass('show');
+            //提交成功
+            $submit.addClass('show').animateCss('fadeIn', function () {
+                //
+            });
         });
+
 
     });
 </script>

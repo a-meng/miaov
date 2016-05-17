@@ -1,0 +1,1 @@
+window.vue_home='veu.home';

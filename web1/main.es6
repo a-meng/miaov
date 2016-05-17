@@ -1,0 +1,1 @@
+import  './components/views/home.es6';
