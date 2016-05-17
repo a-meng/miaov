@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>页面练习</title>
+    <link rel="stylesheet" href="animate.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="pages">
+    <div class="page" id="welcome">
+        <img class="tree" src="img/tree.jpg"/>
+        <img class="shakeImg" src="img/shake.png"/>
+        <img class="title" src="img/title.png"/>
+        <img class="title2" src="img/title2.png"/>
+    </div>
+    <div class="page show" id="home">
+        <div class="header">
+            <div class="light">
+                新闻线索
+            </div>
+            <div id="scroll">
+                幻灯片
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="title">给景区评分</div>
+            <div class="content">
+                <ul class="star-list">
+                    <li>
+                        <strong>综合印象</strong>
+                        <div class="star"></div>
+                    </li>
+                    <li>
+                        <strong>服务指数</strong>
+                        <div class="star"></div>
+                    </li>
+                    <li>
+                        <strong>消费指数</strong>
+                        <div class="star"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="title">给景区添加标签</div>
+            <div class="content">
+                <label class="checkbox">
+                    <input type="checkbox" name="aa">
+                    <span>服务好</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>景色赞</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>千篇一律</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>看人海</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>挤爆了</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>服务差</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="aa"/>
+                    <span>莫名其妙</span>
+                </label>
+            </div>
+        </div>
+
+        <footer>
+            <button type="submit">提交</button>
+        </footer>
+
+    </div>
+    <div class="page" id="submit">
+        <h2>提交成功页</h2>
+    </div>
+    <div class="page" id="upload">
+        <h1>文件上传页</h1>
+    </div>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $.fn.extend({
+        animateCss: function (animationName, callback) {
+            $(this).addClass('animated ' + animationName).one('animationend', function () {
+                if (callback) {
+                    callback();
+                }
+            });
+        }
+    });
+
+    $(function () {
+        var $pages = $('.page');
+        var $welcome = $('#welcome');
+        var $home = $('#home');
+
+        /*
+         * $welcome页动画
+         * */
+        /* $welcome.find('.tree').animateCss('fadeInUp', function () {
+         $welcome.find('.title').animateCss('fadeInUp', function () {
+         $welcome.find('.title2').animateCss('fadeInUp', function () {
+         $welcome.find('.shakeImg').animateCss('fadeInUp', function () {
+         $home.addClass('before');
+         //跳转到首页
+         setTimeout(function () {
+         $welcome.animateCss('fadeOut', function () {
+         $welcome.removeClass('show');
+         $home.addClass('show').removeClass('before');
+         });
+         }, 2000);
+
+         });
+         });
+         });
+         });*/
+
+        /*
+         *首页
+         * */
+        $home.on('click','button[type=submit]', function () {
+
+        });
+
+    });
+</script>
+</body>
+</html>
