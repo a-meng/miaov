@@ -1,0 +1,92 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+.pages {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+.pages .page {
+  display: none;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.pages .page.show {
+  z-index: 5;
+  display: block;
+}
+.pages .page.before {
+  z-index: 1;
+  display: block;
+}
+#welcome img {
+  margin-top: 2rem;
+  display: block;
+  width: 100%;
+  opacity: 0;
+}
+#welcome img:nth-child(2) {
+  width: 5%;
+  margin-left: 83%;
+  margin-bottom: -1rem;
+}
+#home footer {
+  position: absolute;
+  bottom: .5rem;
+  left: .5rem;
+  right: .5rem;
+}
+#home button[type=submit] {
+  display: block;
+  width: 100%;
+  font-size: 2rem;
+  padding: .5rem;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #3c9bbb;
+  color: #fff;
+  border: none;
+  border-radius: .5rem;
+}
+.panel {
+  border-bottom: 1px solid #ddd;
+}
+.panel > .title {
+  font-size: 1.2rem;
+  padding: .7rem;
+}
+.panel > .content {
+  padding: .5rem;
+}
+label.checkbox {
+  padding: 5px;
+  display: inline-block;
+}
+label.checkbox input[type="checkbox"] {
+  display: none;
+}
+label.checkbox input[type="checkbox"] ~ span {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #3c9bbb;
+  border-radius: 2rem;
+}
+label.checkbox input[type="checkbox"]:checked ~ span {
+  background: #3c9bbb;
+  color: #fff;
+}
+ul.star-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+ul.star-list li {
+  padding: 0;
+  margin: 0;
+}
