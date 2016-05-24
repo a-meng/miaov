@@ -193,6 +193,10 @@ button.big {
   border: 0;
   border-radius: .5rem;
 }
+#home .blur {
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+}
 #home footer {
   position: absolute;
   bottom: .5rem;
@@ -205,8 +209,10 @@ button.big {
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   text-align: center;
+  background: url('../img/tranks2.png') center center no-repeat;
+  background-size: contain;
 }
 #home .header {
   position: relative;

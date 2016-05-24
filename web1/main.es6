@@ -12,13 +12,15 @@ import  './components/Panel.es6';
 var app = new Vue({
     el: '#app',
     data: {
-        currentView: 'home'
+        currentView: 'welcome'
     },
     events: {
         'welcomePageEnd': function () {
+            console.info('welcomePageEnd')
             this.currentView = 'home';
         },
         'homePageEnd': function () {
+            console.info('homePageEnd')
             this.currentView = 'news';
         }
     },

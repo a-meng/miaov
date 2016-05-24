@@ -64,13 +64,15 @@
 	var app = new Vue({
 	    el: '#app',
 	    data: {
-	        currentView: 'home'
+	        currentView: 'welcome'
 	    },
 	    events: {
 	        'welcomePageEnd': function welcomePageEnd() {
+	            console.info('welcomePageEnd');
 	            this.currentView = 'home';
 	        },
 	        'homePageEnd': function homePageEnd() {
+	            console.info('homePageEnd');
 	            this.currentView = 'news';
 	        }
 	    }
@@ -84,17 +86,17 @@
 	'use strict';
 
 	Vue.component('home', {
-	    template: '\n     <div class="page show" id="home">\n        <div class="header">\n            <com-scroll len="4">\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/1.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/2.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/3.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/4.jpg">\n                </div>\n            </com-scroll>\n            <div class="light">新闻<br/>线索</div>\n        </div>\n\n        <com-panel title="给景区评分2">\n            <com-star-list :list=\'starList\'></com-star-list>\n        </com-panel>\n\n        <com-panel title="给景区添加标签">\n            <com-checkbox v-for="label in keywords" :label="label"></com-checkbox>\n        </com-panel>\n\n        <footer>\n            <button class="big" @click="submitHandler" type="button">提交</button>\n        </footer>\n\n        <div transition="fade" v-show="submitOverlay" class="submit-overlay">\n            <h1>提交成功</h1>\n        </div>\n    </div>\n    ',
+	    template: '\n     <div class="page show" id="home"  >\n     <div :class="{blur:submitOverlay}">\n         <div class="header">\n                <com-scroll len="4">\n                    <div class="item">\n                        <img style="width:100%;height:150px;" class="block" src="img/1.jpg">\n                    </div>\n                    <div class="item">\n                        <img style="width:100%;height:150px;" class="block" src="img/2.jpg">\n                    </div>\n                    <div class="item">\n                        <img style="width:100%;height:150px;" class="block" src="img/3.jpg">\n                    </div>\n                    <div class="item">\n                        <img style="width:100%;height:150px;" class="block" src="img/4.jpg">\n                    </div>\n                </com-scroll>\n                <div class="light">新闻<br/>线索</div>\n            </div>\n\n            <com-panel title="给景区评分">\n                <com-star-list :list=\'starList\'></com-star-list>\n            </com-panel>\n\n            <com-panel title="给景区添加标签">\n                <com-checkbox v-for="label in keywords" :label="label"></com-checkbox>\n            </com-panel>\n\n            <footer>\n                <button class="big" @click="submitHandler" type="button">提交</button>\n            </footer>\n         </div>\n\n          <div transition="fade" v-show="submitOverlay" class="submit-overlay">\n          </div>\n     </div>\n    ',
 	    data: function data() {
 	        return {
 	            submitOverlay: false,
 	            keywords: ['服务好', '好吃好玩', '没意思', '便宜实惠', '环境优美'],
 	            starList: [{
 	                text: '综合印象',
-	                value: 5
+	                value: 0
 	            }, {
 	                text: '服务指数',
-	                value: 2
+	                value: 0
 	            }, {
 	                text: '消费指数',
 	                value: 0
@@ -108,7 +110,7 @@
 
 	            this.submitOverlay = true;
 	            setTimeout(function () {
-	                return _this.$dispatch('homeSubmitEnd');
+	                return _this.$dispatch('homePageEnd');
 	            }, 2000);
 	        }
 	    }
