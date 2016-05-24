@@ -2,9 +2,6 @@ Vue.component('home', {
     template: `
      <div class="page show" id="home">
         <div class="header">
-            <div class="light">
-                新闻线索
-            </div>
             <com-scroll len="4">
                 <div class="item">
                     <img style="width:100%;height:150px;" class="block" src="img/1.jpg">
@@ -19,9 +16,10 @@ Vue.component('home', {
                     <img style="width:100%;height:150px;" class="block" src="img/4.jpg">
                 </div>
             </com-scroll>
+            <div class="light">新闻<br/>线索</div>
         </div>
 
-        <com-panel title="给景区评分">
+        <com-panel title="给景区评分2">
             <com-star-list :list='starList'></com-star-list>
         </com-panel>
 

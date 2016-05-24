@@ -64,13 +64,13 @@
 	var app = new Vue({
 	    el: '#app',
 	    data: {
-	        currentView: 'welcome'
+	        currentView: 'home'
 	    },
 	    events: {
-	        'welcomeOpenEnd': function welcomeOpenEnd() {
+	        'welcomePageEnd': function welcomePageEnd() {
 	            this.currentView = 'home';
 	        },
-	        'homeSubmitEnd': function homeSubmitEnd() {
+	        'homePageEnd': function homePageEnd() {
 	            this.currentView = 'news';
 	        }
 	    }
@@ -84,7 +84,7 @@
 	'use strict';
 
 	Vue.component('home', {
-	    template: '\n     <div class="page show" id="home">\n        <div class="header">\n            <div class="light">\n                新闻线索\n            </div>\n            <com-scroll len="4">\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/1.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/2.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/3.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/4.jpg">\n                </div>\n            </com-scroll>\n        </div>\n\n        <com-panel title="给景区评分">\n            <com-star-list :list=\'starList\'></com-star-list>\n        </com-panel>\n\n        <com-panel title="给景区添加标签">\n            <com-checkbox v-for="label in keywords" :label="label"></com-checkbox>\n        </com-panel>\n\n        <footer>\n            <button class="big" @click="submitHandler" type="button">提交</button>\n        </footer>\n\n        <div transition="fade" v-show="submitOverlay" class="submit-overlay">\n            <h1>提交成功</h1>\n        </div>\n    </div>\n    ',
+	    template: '\n     <div class="page show" id="home">\n        <div class="header">\n            <com-scroll len="4">\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/1.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/2.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/3.jpg">\n                </div>\n                <div class="item">\n                    <img style="width:100%;height:150px;" class="block" src="img/4.jpg">\n                </div>\n            </com-scroll>\n            <div class="light">新闻<br/>线索</div>\n        </div>\n\n        <com-panel title="给景区评分2">\n            <com-star-list :list=\'starList\'></com-star-list>\n        </com-panel>\n\n        <com-panel title="给景区添加标签">\n            <com-checkbox v-for="label in keywords" :label="label"></com-checkbox>\n        </com-panel>\n\n        <footer>\n            <button class="big" @click="submitHandler" type="button">提交</button>\n        </footer>\n\n        <div transition="fade" v-show="submitOverlay" class="submit-overlay">\n            <h1>提交成功</h1>\n        </div>\n    </div>\n    ',
 	    data: function data() {
 	        return {
 	            submitOverlay: false,
@@ -121,43 +121,13 @@
 	'use strict';
 
 	Vue.component('welcome', {
-	    template: '\n    <div class="page" id="welcome">\n        <img v-if="tree" class="tree animated fadeInUp" @animationend="treeShowEnd" src="img/tree.jpg"/>\n        <img v-if="shakeimg" src="img/shake.png"/>\n        <img v-if="title"  class="title animated fadeInUp" @animationend="titleShowEnd" src="img/title.png"/>\n        <img v-if="title2" class="title2 animated fadeInUp" @animationend="title2ShowEnd" src="img/title2.png"/>\n    </div>\n    ',
-	    data: function data() {
-	        return {
-	            tree: true,
-	            shakeimg: false,
-	            title: false,
-	            title2: false
-	        };
-	    },
-
-	    methods: {
-	        treeShowEnd: function treeShowEnd() {
-	            this.title = true;
-	        },
-	        titleShowEnd: function titleShowEnd() {
-	            this.title2 = true;
-	        },
-	        title2ShowEnd: function title2ShowEnd() {
-	            var _this = this;
-
-	            //图片都显示后1.5秒后跳转
-	            setTimeout(function () {
-	                return _this.$dispatch('welcomeOpenEnd');
-	            }, 1500);
-	        }
-	    },
+	    template: '\n    <div class="page" id="welcome">\n    <style>\n        #welcome img {\n            display: block;\n            opacity: 0;\n            margin:2rem auto;\n            max-width: 100%;\n        }\n        #welcome .tree{\n            -webkit-animation: fadeInUp 1s  ease-out forwards;\n            animation: fadeInUp 1s  ease-out forwards;\n        }\n        #welcome .title{\n            -webkit-animation: fadeInUp 1s 1s ease-out forwards;\n            animation: fadeInUp 1s 1s ease-out forwards;\n        }\n        #welcome .title2{\n            -webkit-animation: fadeInUp 1s 2s ease-out forwards;\n            animation: fadeInUp 1s 2s ease-out forwards;\n        }\n    </style>\n        <img  class="tree" src="img/tree.jpg"/>\n        <img  class="title" src="img/title.png"/>\n        <img  class="title2" src="img/title2.png"/>\n    </div>\n    ',
 	    ready: function ready() {
-	        /*var $tree=$(this.$els.tree);
-	         var $title=$(this.$els.title);
-	         var $title2=$(this.$els.title2);
-	         var $shakeimg=$(this.$els.shakeimg);
-	         $tree.animateCss('animated fadeInUp', function () {
-	         $title.animateCss('animated fadeInUp', function () {
-	         $title2.animateCss('animated fadeInUp', function () {
-	           });
-	         });
-	         });*/
+	        var _this = this;
+
+	        setTimeout(function () {
+	            return _this.$dispatch('welcomePageEnd');
+	        }, 4800);
 	    }
 	});
 

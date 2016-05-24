@@ -11,15 +11,15 @@ import  './components/Panel.es6';
 //应用入口
 var app = new Vue({
     el: '#app',
-    data:{
-        currentView:'welcome'
+    data: {
+        currentView: 'home'
     },
-    events:{
-        'welcomeOpenEnd': function () {
-            this.currentView='home';
+    events: {
+        'welcomePageEnd': function () {
+            this.currentView = 'home';
         },
-        'homeSubmitEnd': function () {
-            this.currentView='news';
+        'homePageEnd': function () {
+            this.currentView = 'news';
         }
     },
 
