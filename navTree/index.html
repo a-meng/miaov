@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*样式ul重置*/
+        .nav-tree ul, .nav-tree li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /*基本结构 (第一层显示，子集针对父级定位并隐藏)*/
+        .nav-tree {
+            background-color: rgb(10, 14, 24);
+            color: #fff;
+            position: relative;
+            width: 200px;
+        }
+
+        .nav-tree ul ul {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background: rgb(10, 14, 24);
+            border-left: 1px solid #ddd;
+            /*width:150px;*/
+        }
+
+        .nav-tree {
+            background-color: rgb(10, 14, 24);
+            color: #fff;
+            position: relative;
+            width: 200px;
+            /*height:500px;*/
+        }
+
+        /*题标签样式 */
+        .nav-tree li {
+            padding: 4px;
+        }
+
+        .nav-tree .node {
+            padding: 6px;
+            white-space: nowrap; /*强制文字不换行撑开宽度 要换行 就删掉这行*/
+            min-width: 150px; /*怕太短不好看*/
+        }
+
+        .nav-tree .node.dir:after {
+            content: '  >'
+        }
+
+        /*触发展开隐藏*/
+        .nav-tree li:hover > ul {
+            display: block;
+        }
+
+        .nav-tree li:hover > .node {
+            background: rgb(74, 139, 207);
+        }
+
+    </style>
+</head>
+<body style="padding:50px;">
+<div class="nav-tree">
+    <ul>
+        <li>
+            <div class="node dir">一级导航1</div>
+            <ul>
+                <li>
+                    <div class="node dir">二级导航1-1 呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵呵</div>
+                    <ul>
+                        <li>
+                            <div class="node">三级导航1-1</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航1-2</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航1-3</div>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="node dir">二级导航1-2</div>
+                    <ul>
+                        <li>
+                            <div class="node">三级导航1</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航2</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航3</div>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="node dir">二级导航1-3</div>
+                    <ul>
+                        <li>
+                            <div class="node">三级导航1</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航2</div>
+                        </li>
+                        <li>
+                            <div class="node">三级导航3</div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="node dir">一级导航2</div>
+            <ul>
+                <li>
+                    <div class="node">二级导航2-1</div>
+                </li>
+                <li>
+                    <div class="node">二级导航2-2</div>
+                </li>
+                <li>
+                    <div class="node">二级导航2-3</div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <div class="node dir">一级导航3</div>
+            <ul>
+                <li>
+                    <div class="node">二级导航3-1</div>
+                </li>
+                <li>
+                    <div class="node">二级导航3-2</div>
+                </li>
+                <li>
+                    <div class="node">二级导航3-3</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<script src="jquery2.1.js"></script>
+
+</body>
+</html>
