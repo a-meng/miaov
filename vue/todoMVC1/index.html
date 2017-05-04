@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todoMVC</title>
+    <style>
+        #app {
+            width: 700px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+        }
+
+        #app h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<p>
+    例子源码地址：
+
+    https://github.com/vuejs/vue/tree/dev/examples/todomvc
+</p>
+<div id="app">
+    <h3>todos</h3>
+    <div class="newTodo">
+        <label>
+            <input type="checkbox">全选
+        </label>
+        <input type="text" placeholder="添加新任务">
+    </div>
+    <div class="todos">
+        <div v-for="todo in todos">
+            <label><input type="checkbox"></label>
+            <input type="text" >
+        </div>
+    </div>
+</div>
+
+<script src="vue.js"></script>
+<script src="todoServ.js"></script>
+<script>
+    (function () {
+
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                //所有任务
+                todos: [],
+
+                //待添加的新任务
+                newTodo: '',
+
+                //编辑状态的todo
+                editedTodo: null,
+
+                //可见的
+                visibility: 'all'
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>
