@@ -1,7 +1,7 @@
 /*模仿后端更新*/
 (function () {
     let STORE_KEY = 'TODO_MVC_0.1';
-    let _uid = 0;
+    let _uid = 'todos_'+Date.now();
 
     function getUid() {
         return 'todo_' + _uid++;
@@ -33,8 +33,11 @@
         },
         add(todo){
             let todos = storeGet();
-            todo.id = getUid();
-            todos.push(todo);
+            todos.push({
+                id: getUid(),
+                content: todo.content,
+                status: 0         /* 0:待做 1:完成 2:放弃 */
+            });
             storeSet(todos);
         }
     };

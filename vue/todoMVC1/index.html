@@ -10,6 +10,10 @@
             border: 1px solid #ddd;
         }
 
+        #app form {
+            display: inline-block;
+        }
+
         #app h3 {
             text-align: center;
         }
@@ -22,17 +26,26 @@
     https://github.com/vuejs/vue/tree/dev/examples/todomvc
 </p>
 <div id="app">
-    <h3>todos</h3>
+    <h3>{{title}}</h3>
     <div class="newTodo">
         <label>
-            <input type="checkbox">全选
+            <input v-model="selectAll" type="checkbox">全选
         </label>
-        <input type="text" placeholder="添加新任务">
+        <form @submit.prevent="addTodoHandler">
+            <input type="text" v-model="newTodo" placeholder="添加新任务">
+        </form>
     </div>
     <div class="todos">
         <div v-for="todo in todos">
-            <label><input type="checkbox"></label>
-            <input type="text" >
+            <input type="checkbox" v-model="selectedTodos" :value="todo.id">
+            {{todo.content}}
+        </div>
+    </div>
+    <div class="forter">
+        <div style="float:right;">
+            <input type="radio" v-model="visibility" value="0">
+            <input type="radio" v-model="visibility" value="1">
+            <input type="radio" v-model="visibility" value="2">
         </div>
     </div>
 </div>
@@ -41,11 +54,10 @@
 <script src="todoServ.js"></script>
 <script>
     (function () {
-
-
         let app = new Vue({
             el: '#app',
             data: {
+                title: 'todos',
                 //所有任务
                 todos: [],
 
@@ -56,12 +68,35 @@
                 editedTodo: null,
 
                 //可见的
-                visibility: 'all'
+                visibility: 'all',
+
+                selectedTodos: [],
+                selectAll: false
+            },
+            methods: {
+                getAll(){
+                    this.todos = todoServ.getAll();
+                },
+                addTodoHandler(){
+                    todoServ.add({content: this.newTodo});
+                    this.newTodo = '';
+                    this.getAll();
+                },
+            },
+            watch: {
+                selectAll(val){
+                    if (val) {
+                        this.selectedTodos = this.todos.map(e=>e.id);
+                    } else {
+                        this.selectedTodos = [];
+                    }
+                }
+            },
+            created(){
+                this.getAll();
             }
         });
-    });
-
-
+    })();
 </script>
 </body>
 </html>
