@@ -5,96 +5,146 @@
     <title>todoMVC</title>
     <style>
         #app {
-            width: 700px;
+            width: 500px;
             margin: 20px auto;
             border: 1px solid #ddd;
         }
 
-        #app form {
-            display: inline-block;
+        #app h2 {
+            text-align: center;
         }
 
-        #app h3 {
-            text-align: center;
+        #app .footer {
+            text-align: right;
+        }
+
+        #app table {
+            width: 100%;
+        }
+
+        #app table th, #app table td {
+            padding: 5px;
+            text-align: left;
+        }
+
+        #app input[type='text'] {
+            border: 1px solid #ddd;
+            padding: 8px;
+            width: 250px;
+        }
+
+
+        .footer{
+            padding:5px;
+        }
+        span.btn{
+            display: inline-block;
+            padding:2px;
+            border:1px solid #ddd;
+            font-size: .9rem;
+            cursor: default;
+            margin:5px;
+        }
+        span.btn:hover,span.btn.active{
+            border-color:green;
         }
     </style>
 </head>
 <body>
-<p>
-    例子源码地址：
 
-    https://github.com/vuejs/vue/tree/dev/examples/todomvc
-</p>
 <div id="app">
-    <h3>{{title}}</h3>
-    <div class="newTodo">
-        <label>
-            <input v-model="selectAll" type="checkbox">全选
-        </label>
-        <form @submit.prevent="addTodoHandler">
-            <input type="text" v-model="newTodo" placeholder="添加新任务">
-        </form>
-    </div>
-    <div class="todos">
-        <div v-for="todo in todos">
-            <input type="checkbox" v-model="selectedTodos" :value="todo.id">
-            {{todo.content}}
-        </div>
-    </div>
-    <div class="forter">
-        <div style="float:right;">
-            <input type="radio" v-model="visibility" value="0">
-            <input type="radio" v-model="visibility" value="1">
-            <input type="radio" v-model="visibility" value="2">
-        </div>
+    <h2>{{title}}</h2>
+    <p>
+        例子参考：
+        <a target="_blank" href="https://github.com/vuejs/vue/tree/dev/examples/todomvc">
+            https://github.com/vuejs/vue/tree/dev/examples/todomvc
+        </a>
+    </p>
+    <table>
+        <thead>
+        <tr>
+            <th>
+                批量设置
+            </th>
+            <th>
+                <form @submit.prevent="addTodo">
+                    <input type="text" v-model="newTodo" placeholder="添加任务">
+                </form>
+
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="todo in filteredTodos">
+            <td>是否完成</td>
+            <td><input type="text" v-model="todo.content"></td>
+            <td>删除</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="footer">
+
+        <span class="btn">所有任务</span>
+        <span class="btn">未完成的</span>
+        <span class="btn">已完成的</span>
+        <span class="btn">清空</span>
+
     </div>
 </div>
 
 <script src="vue.js"></script>
-<script src="todoServ.js"></script>
 <script>
     (function () {
+        const STORE_KEY = 'TODOS_0.1'
+        let store = {
+            getTodos() {
+                return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+            },
+            saveTodos(todos) {
+                localStorage.setItem(STORE_KEY, JSON.stringify(todos));
+            }
+        };
+
         let app = new Vue({
             el: '#app',
             data: {
                 title: 'todos',
-                //所有任务
-                todos: [],
-
-                //待添加的新任务
                 newTodo: '',
-
-                //编辑状态的todo
-                editedTodo: null,
-
-                //可见的
-                visibility: 'all',
-
-                selectedTodos: [],
-                selectAll: false
+                todos: store.getTodos(),
+                visibility: 'all'
             },
-            methods: {
-                getAll(){
-                    this.todos = todoServ.getAll();
-                },
-                addTodoHandler(){
-                    todoServ.add({content: this.newTodo});
-                    this.newTodo = '';
-                    this.getAll();
-                },
-            },
-            watch: {
-                selectAll(val){
-                    if (val) {
-                        this.selectedTodos = this.todos.map(e=>e.id);
-                    } else {
-                        this.selectedTodos = [];
+            computed: {
+                filteredTodos(){
+                    let val = this.visibility, todos = this.todos;
+                    if (val === 'all') {
+                        return todos;
+                    } else if (val === 'active') {
+                        return todos.filter(e => e.completed === false);
+                    } else if (val === 'completed') {
+                        return todos.filter(e => e.completed === true);
                     }
                 }
             },
-            created(){
-                this.getAll();
+            watch: {
+                todos(val){
+                    store.saveTodos(val);
+                }
+            },
+            methods: {
+                addTodo(){
+                    let content = this.newTodo;
+                    if (content) {
+                        this.todos.push({
+                            id: 'todo_' + Date.now(),
+                            completed: false,
+                            content: content
+                        });
+                        this.newTodo = '';
+                    }
+                },
             }
+
         });
     })();
 </script>
