@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>给叫定制的表单校验</title>
+    <style>
+        form {
+            padding: 50px;
+        }
+
+        input[type=text] {
+            border: 1px solid #ddd;
+            padding: 3px;
+        }
+
+        #thanError {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form action="">
+    <input id="moneyA" type="text" name="money_a"> -
+    <input id="moneyb" type="text" bigThan="#moneyA,#thanError" name="money_b">
+    <p id="thanError"></p>
+</form>
+<script src="jquery.js"></script>
+<script src="jquery.validate.js"></script>
+<script>
+    /*自定义个校验规则  抄 additional-methods的*/
+    (function () {
+        function isMoney(val) {
+            return /^\d+(.\d{1,2})?$/.test(val);
+
+        }
+
+        $.validator.addMethod("bigThan", function (value, element, param) {
+            console.info(arguments)
+
+            var arr = param.split(',');
+            var $err = $(arr[1]), $small = $(arr[0]), $big = $(element);
+            var a = $small.val(), b = $big.val();
+
+            if (!isMoney(a) || !isMoney(b)) {
+                $small.addClass('error');
+                $big.addClass('error');
+                $err.html('请输入有效信息').show();
+                return false;
+            }
+
+            if (a > b) {
+                $small.addClass('error');
+                $big.addClass('error');
+                $err.html('结束金额必须大于开始金额').show();
+                return false;
+            }
+
+            $small.removeClass('error');
+            $big.removeClass('error');
+            $err.hide();
+            return true;
+
+        }, "");
+
+
+    })();
+
+
+    //业务代码
+    $(function () {
+        let validator = $('form').validate();
+    });
+</script>
+
+</body>
+</html>
