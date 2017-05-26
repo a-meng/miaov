@@ -87,6 +87,51 @@
 
 
 </div>
+<script src="js/lodash.js"></script>
+<script>
+    //curry工具函数
+    function curry(fun) {
+        let len = fun.length;
+        let args = [];
+        return function wrapper(...arr) {
+            args = args.concat(arr);
+            if (args.length >= len) {
+                //执行最终方法,清空缓存参数
+                let _args = [...args];
+                args = [];
+                return fun.apply(this, _args);
+            } else {
+                //参数还不够
+                return wrapper;
+            }
+        }
+    }
+    let add1 = curry((x, y, z) => x + y + z);
+    let add2 = _.curry((x, y, z) => x + y + z);
 
+    console.info('add1(1,1,1)', add1(1, 1, 1));
+    console.info('add2(1,1,1)', add2(1, 1, 1));
+
+    console.info('add1(1,1)(1)', add1(1, 1)(1));
+    console.info('add2(1,1)(1)', add2(1, 1)(1));
+
+
+    //curry版 concat,slice,splice (不支持可选参数和参数默认值)
+
+    let _concat = curry(function (a, b) {
+        return a.concat(b);
+    });
+    let _slice = curry(function (arr, begin, end) {
+        return arr.slice(begin, end);
+    });
+    let _splice = curry(function (arr, start, deleteCount) {
+        return [...arr].splice(start, deleteCount);
+    });
+
+    console.info("_concat(['a'])(['b'])", _concat(['a'])( ['b']));
+    console.info("_slice(['a','b','c','d','e'])(2,4)", _slice(['a', 'b', 'c', 'd', 'e'])( 2, 4));
+    console.info("_splice(['a','b','c'])(1,1)", _splice(['a', 'b', 'c'])(1, 1));
+
+</script>
 </body>
 </html>
