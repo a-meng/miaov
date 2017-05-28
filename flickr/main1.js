@@ -1,5 +1,4 @@
 (function () {
-
     class ImgList {
         constructor(target) {
             this.$target = $(target);
