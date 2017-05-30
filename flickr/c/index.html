@@ -23,24 +23,26 @@
 </head>
 <body>
 
-<div id="app"></div>
-<script src="lodash.js"></script>
-<script src="jquery2.1.js"></script>
 
-<!--main1,main2两种风格实现方式-->
-<!--<script src="main1.js"></script>-->
-<script src="main2.js"></script>
+<script src="../lodash.js"></script>
+<script src="../jquery2.1.js"></script>
+<div>
+    <strong>输入访问地址，当访问出错时 会报错</strong><br/>
+    <small>只有：images/data1.json或images/data2.json 两个正确地址</small>
+    <br>
+    <input id="search" type="text">
+</div>
+
+<div id="app"></div>
+<script src="main.js"></script>
 <script>
     $(function () {
-        //任务 ： 请求资源 获得 数据列表 渲染到指定位置
         let target = '#app';
 
-        //一个imgList,实例调用fetch来生成dom
         let app = imgList(target);
 
-        app.fetch('images/data2.json');
-        setTimeout(() => app.fetch('images/data1.json'), 3000);
-        console.info(app)
+        document.querySelector('#search')
+            .addEventListener('input', (e) => app.fetch(e.target.value));
     });
 </script>
 </body>
