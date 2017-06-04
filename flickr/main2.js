@@ -1,6 +1,10 @@
 (function () {
-    /* 技巧：： 把操作参数放前面 数据放后面,用flow拼出处理数据处理流程 */
+    /*
+        技巧：： 把操作参数放前面 数据放后面,用flow拼出处理数据处理流程
+        另外 参考https://github.com/llh911001/mostly-adequate-guide-chinese/blob/master/ch7.md加类型签名
+    * */
     //curry化的map和console.info
+
     var map = _.curry((callback, list) => list.map(callback));
     var info = _.curry((prefix,e) => {
         console.info(prefix,e);

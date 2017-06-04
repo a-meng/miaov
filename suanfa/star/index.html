@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A star算法练习</title>
+    <style>
+        #app {
+            width: 400px;
+            height: 400px;
+            margin: 10px auto;
+        }
+
+        table {
+            table-layout: fixed;
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid gray;
+            position: relative;
+        }
+
+        .from {
+            background: green;
+        }
+
+        .to {
+            background: red;
+        }
+
+        .wall {
+            background: #ddd;
+        }
+
+        .way {
+            background: lightseagreen;
+            transition: .2s;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app"></div>
+<footer style="text-align: center">
+    <span>点击网格来添加删除墙</span>
+    <button id="clear">清除路径</button>
+    <button id="search">开始寻路</button>
+</footer>
+
+<script src="jquery2.1.js"></script>
+<script src="aStar.js"></script>
+<script>
+    $(function () {
+        //地图
+        let size = 15;
+        let map = createMap(size, '#app');
+        //起点终点
+        let from = [1, 1], to = [12, 10];
+        $('#1-1').addClass('from');
+        $('#12-10').addClass('to');
+
+
+        //添加墙
+        $('#app').on('click', 'td:not(.from,.to)', function () {
+            $(this).toggleClass('wall');
+        });
+
+        //寻路
+        $('#search').click(function () {
+            //墙
+            let wall = [];
+            $('.wall').each(function () {
+                wall.push(this.id.split('-').map(e=>parseInt(e)));
+            });
+            starA(from, to, wall);
+
+        });
+        $('#clear').click(function () {
+            $('.way').removeClass('way');//擦除
+        });
+
+
+        //from:[x,y] ,to:[x,y] ,wall:[x,y]
+        //return path:[[x,y]]
+        function starA(from, to, wall) {
+            let closeArr = [...wall], openArr = [];
+
+            //以一个点开始查询
+            function go(point) {
+                closeArr.push(point);
+                //1. 得到取出点的 周围点 (不包含关闭路径中的点)
+                let possiblePoints = pointExclude(getPoints(point), closeArr);
+                //2. 在周围点中选出下一个点
+                let _fs = possiblePoints.map(p=>f([point, p, to]));
+                let nextIndex = _fs.indexOf(_fs.reduce((a, b)=>a < b ? a : b));
+                let nextPoint = possiblePoints[nextIndex];
+                //3. 只要不是终点就进一步调用
+                if (nextPoint[0] !== to[0] || nextPoint[1] !== to[1]) {
+                    $('#' + nextPoint.join('-')).removeClass('way').addClass('way');
+                    setTimeout(function () {
+                        go(nextPoint);
+                    }, 300)
+
+                } else {
+                    alert('找完啦')
+                }
+            }
+
+            go(from);//从起点开始
+
+            //return pointExclude(closeArr, [from, to, ...wall]);
+        }
+
+        //估价函数 （的路径长度）
+        function f(points) {
+            let len = 0;
+            points.forEach(function (p, i) {
+                let a = p, b = points[i + 1];
+                if (b) {
+                    len += Math.sqrt(Math.abs(Math.pow(b[0] - a[0], 2) + Math.pow(b[1] - a[1], 2)));
+                }
+            });
+            return len;
+        }
+
+        //返回 arr1中 不包含 arr2的 项
+        function pointExclude(arr1, arr2) {
+            return arr1.filter(function (p) {
+                return arr2.find(item=>item[0] === p[0] && item[1] === p[1]) === undefined
+            });
+        }
+
+        //找到相邻点
+        function getPoints(p) {
+            let all = [];
+            for (let x = p[0] - 1; x <= p[0] + 1; x++) {
+                for (let y = p[1] - 1; y <= p[1] + 1; y++) {
+                    if (x !== p[0] || y !== p[1]) {
+                        all.push([x, y]);
+                    }
+                }
+            }
+            return all;
+        }
+
+
+        function createMap(size, target) {
+            let html = '<table>';
+            for (let i = 0; i < size; i++) {
+                html += '<tr>';
+                for (let ii = 0; ii < size; ii++) {
+                    html += '<td id="' + ii + '-' + i + '"></td>';
+                }
+                html += '</tr>';
+            }
+            html += '</table>';
+            document.querySelector(target).innerHTML = html;
+        }
+    });
+</script>
+</body>
+</html>

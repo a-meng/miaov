@@ -33,20 +33,54 @@
             width: 250px;
         }
 
-
-        .footer{
-            padding:5px;
+        #app input[type='text'][readonly] {
+            border-color: transparent;
         }
-        span.btn{
+
+        .footer {
+            padding: 5px;
+        }
+
+        /*底部操作按钮样式*/
+        span.btn {
             display: inline-block;
-            padding:2px;
-            border:1px solid #ddd;
+            padding: 2px;
+            border: 1px solid #ddd;
             font-size: .9rem;
             cursor: default;
-            margin:5px;
+            margin: 5px;
         }
-        span.btn:hover,span.btn.active{
-            border-color:green;
+
+        span.btn:hover, span.btn.active {
+            border-color: green;
+        }
+
+        /*checkbox样式*/
+        span.checkbox {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            text-align: center;
+        }
+
+        span.checkbox.selected {
+            border-color: green;
+        }
+
+        span.checkbox:after {
+            content: '√';
+            color: transparent;
+        }
+
+        span.checkbox.selected:after {
+            content: '√';
+            color: green;
+        }
+
+        span.checkbox:hover {
+            border-color: green;
         }
     </style>
 </head>
@@ -76,10 +110,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="todo in filteredTodos">
-            <td>是否完成</td>
-            <td><input type="text" v-model="todo.content"></td>
-            <td>删除</td>
+        <tr v-for="(todo,index) in filteredTodos">
+            <td>
+                <span :class="{checkbox:true,selected:todo.completed}"
+                      @click="doneTodo(todo)"></span>
+            </td>
+            <td><input type="text" readonly v-model="todo.content"></td>
+            <td><span @click="delTodo(index)">删除</span></td>
         </tr>
         </tbody>
     </table>
@@ -127,8 +164,13 @@
                 }
             },
             watch: {
-                todos(val){
-                    store.saveTodos(val);
+                /*当某个todo元素属性改变时不会触发更新，需要 deep:true 模式*/
+                todos: {
+                    handler(val){
+                        console.info('更新todos', val);
+                        store.saveTodos(val);
+                    },
+                    deep: true
                 }
             },
             methods: {
@@ -143,6 +185,12 @@
                         this.newTodo = '';
                     }
                 },
+                doneTodo(todo){
+                    todo.completed = !todo.completed;
+                },
+                delTodo(index){
+                    this.todos.splice(index,1);
+                }
             }
 
         });
