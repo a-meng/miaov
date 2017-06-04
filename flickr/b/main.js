@@ -20,7 +20,7 @@
         let main = _.flow([
             //解析数据
             map(_.property('media.src')),
-            info('src属性'),
+            info('打印一下src属性'),
             //拼img标签
             map(e => `<img src="${e}"/>`),
             info('img标签'),
@@ -30,7 +30,6 @@
             //渲染dom
             impure.setHtml(target)
         ]);
-
 
         return {
             fetch: impure.getJSON(main)
