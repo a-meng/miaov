@@ -1,0 +1,26 @@
+[
+  {
+    "name": "a",
+    "media": {
+      "src": "images/a.jpeg"
+    }
+  },
+  {
+    "name": "b",
+    "media": {
+      "src": "images/b.jpg"
+    }
+  },
+  {
+    "name": "c",
+    "media": {
+      "src": "images/c.png"
+    }
+  },
+  {
+    "name": "d",
+    "media": {
+      "src": "images/d.jpg"
+    }
+  }
+]

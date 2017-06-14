@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <style>
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            padding: 0;
+            margin: 0;
+        }
+
+        #scroll {
+            width: 250px;
+            height: 150px;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #scroll > .contain {
+            display: none;
+        }
+
+        #scroll > .contain > li {
+            float: left;
+        }
+
+        #scroll > .btns {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            text-align: center;
+        }
+
+        #scroll > .btns i {
+            display: inline-block;
+            background: gray;
+            width: .7rem;
+            height: .7rem;
+            margin: .2rem;
+            border-radius: 50%;
+            opacity: .7;
+        }
+
+        #scroll > .btns i.active {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div id="scroll">
+    <ul class="contain">
+        <li><img src="img/1.jpg"></li>
+        <li><img src="img/2.jpg"></li>
+        <li><img src="img/3.jpg"></li>
+        <li><img src="img/4.jpg"></li>
+    </ul>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+        var $scroll = $('#scroll');
+        var $contain = $('.contain');
+        var LEN = $('.contain>li').length;
+        var scroll_w = $scroll.width();
+        var index = 0;
+
+        //html结构 初始化
+        var btns = '<div class="btns">';
+        for (var i = LEN; i > 0; i--) {
+            btns += (i == LEN ? '<i class="active"></i>' : '<i></i>');
+        }
+        btns += '</div>';
+        $scroll.append(btns);
+        $contain.append($contain.html());
+
+        $contain.children('li').width(scroll_w);
+        $contain[0].style.width = LEN * scroll_w * 2 + 'px';
+        translateX(-scroll_w * LEN);
+        $contain.show();//html结构设置完了再显示，免得画面闪动
+
+        /*
+         * 滑动
+         * */
+        var touchstartX, touchstartLeft, animHandler;
+        $scroll.on('touchstart', function (e) {
+            var ev = e.originalEvent.touches[0];
+            clearInterval(animHandler);
+            clearInterval(autoScrollHandler);
+            resetPage();
+            touchstartX = ev.pageX;
+            touchstartLeft = translateX();
+
+        });
+        $scroll.on('touchmove', function (e) {
+            var ev = e.originalEvent.touches[0];
+            var away = ev.pageX - touchstartX;
+
+            translateX(touchstartLeft + away);
+        });
+        $scroll.on('touchend', function (e) {
+            var ev = e.originalEvent.changedTouches[0];
+            var away = ev.pageX - touchstartX;
+
+            if (away > 0) {
+                moveTo('right');
+            } else {
+                moveTo('left');
+            }
+            autoScroll();
+        });
+
+        //自动滑动
+        var autoScrollHandler;
+        autoScroll();
+
+        //设置or获取 $contain 的 translateX值
+        function translateX(len) {
+            if (len === undefined) {
+                var transform = $contain[0].style.transform;
+                return parseFloat(transform.match(/\((-?.+)px\)/)[1]);
+            } else {
+                $contain[0].style.transform = 'translateX(' + len + 'px)';
+            }
+        }
+
+        //移动动画 方向，是否强制翻页required
+        function moveTo(direction, required) {
+            var left = translateX();
+            var index = Math.abs(parseInt(left / scroll_w));
+            var off = Math.abs(left % scroll_w);
+            console.info('moveTo:', direction, 'index:', index, 'off', off);
+
+            if (direction == 'left') {
+                if (required) {
+                    index++
+                } else {
+                    if (off > scroll_w / 3) {
+                        index++;
+                    }
+                }
+
+            } else if ('right') {
+                if (required) {
+                    index--;
+                } else {
+                    if (off > scroll_w * 2 / 3) {
+                        index++;
+                    }
+                }
+
+            }
+            console.info('next:', index);
+
+            //动画
+            var endLeft = parseInt(-index * scroll_w);
+            animHandler = setInterval(function () {
+                if (Math.abs(endLeft - left) < 3) {
+                    translateX(endLeft);
+                    clearInterval(animHandler);
+                } else {
+                    left = endLeft > left ? left + 3 : left - 3;
+                    translateX(left);
+                }
+            }, 10);
+
+            //页签更新
+            btnsActive(index);
+        }
+
+        //判断当前页面，如果在两头 挪到中间
+        function resetPage() {
+            var left = -translateX();
+            if (left < scroll_w) {
+                left += scroll_w * LEN;
+                translateX(-left);
+            } else if (left > scroll_w * (2 * LEN - 2)) {
+                left -= scroll_w * (LEN);
+                translateX(-left);
+            }
+        }
+
+        var $btns = $('#scroll>.btns i');
+
+        function btnsActive(index) {
+            $btns.removeClass('active');
+            $btns.eq(index > LEN - 1 ? index - LEN : index).addClass('active');
+        }
+
+        function autoScroll() {
+            autoScrollHandler = setInterval(function () {
+                resetPage();
+                moveTo('left', true);
+            }, 5000);
+        }
+    });
+</script>
+</body>
+</html>

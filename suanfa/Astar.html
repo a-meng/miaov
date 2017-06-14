@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>a星算法</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div style="margin-top:10px;">
+    <button>设置开始位置</button>
+    <button>设置结束位置</button>
+    <button>设置墙</button>
+    <button>清空</button>
+</div>
+
+<script src="jquery2.1.js"></script>
+<script src="lodash.js"></script>
+
+<script>
+
+
+    (function () {
+        //创建数组 和对应的table
+        let {map, table} = init('#map', 20);
+
+        function init(target, size) {
+            let table = document.createElement('table');
+            let map = [], html = '';
+            //初始化map和html
+            _.times(size, y => {
+                html += '<tr>';
+                _.times(size, x => {
+                    map.push([x, y]);
+                    html += `<td data-x="${x}" data-y="${y}"></td>`;
+                });
+                html += '</tr>';
+            });
+            table.innerHTML = html;
+            document.querySelector(target).appendChild(table);
+            //关联dom跟map
+            for (let td of table.querySelectorAll('td')) {
+                let {dataset} = td;
+                map.find(e => e[0] == dataset.x && e[1] == dataset.y).td = td;
+            }
+            return {table, map};
+        }
+    })();
+</script>
+</body>
+</html>

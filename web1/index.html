@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>页面练习</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <style>
+        .fade-transition {
+            transition: opacity .5s ease;
+        }
+
+        .fade-enter, .fade-leave {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="pages">
+        <component
+                :is="currentView"
+                transition="fade"
+                transition-mode="in-out">
+        </component>
+    </div>
+</div>
+<script src="./js/jquery2.1.js"></script>
+<script src="./js/vue.js"></script>
+<script>
+    $.fn.extend({
+        animateCss: function (animationName, callback) {
+            $(this).addClass('animated ' + animationName).one('animationend', function () {
+                if (callback) {
+                    callback();
+                }
+            });
+        }
+    });
+</script>
+<script src="../js/web1.main.js"></script>
+</body>
+</html>

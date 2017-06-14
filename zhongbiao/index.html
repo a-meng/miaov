@@ -46,7 +46,8 @@
 
         function updateD() {
             var now = new Date();
-            var h = now.getDate(),
+
+            var h = now.getHours(),
                     _h = h > 9 ? h : '0' + h,
                     m = now.getMinutes(),
                     _m = m > 9 ? m : '0' + m,
@@ -54,6 +55,7 @@
                     _s = s > 9 ? s : '0' + s;
             D.h=h;D.m=m;D.s=s;
             D.full = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + _h + ':' + _m + ':' + _s;
+            console.info(D);
         }
 
         var $h2 = document.querySelector('h2');

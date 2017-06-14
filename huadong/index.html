@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>滑动效果1</title>
+    <style>
+        /*页面基本样式*/
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        /*滑动组件基本样式*/
+        #scroll {
+            overflow: hidden;
+        }
+
+        #scroll > ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            display: none;
+        }
+
+        #scroll > ul > li {
+            float: left;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        /*组件尺寸,位置*/
+        #scroll {
+            width: 320px;
+            height: 110px;
+            margin: 20px auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="scroll">
+    <ul>
+        <li><img src="img/1.jpg"></li>
+        <li><img src="img/2.jpg"></li>
+        <li><img src="img/3.jpg"></li>
+        <li><img src="img/4.jpg"></li>
+    </ul>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+
+        var $scroll = $('#scroll');
+        var $ul = $('#scroll>ul');
+        var $li = $('#scroll>ul>li');
+        var W = $scroll.width(), H = $scroll.height();
+        var LEN = $li.length;
+        //样式初始化
+        $li.width(W);
+        $ul.width(Math.ceil(W * LEN)).show();
+        $ul[0].style.marginLeft = '0px';
+
+        //添加左右滑动效果
+        // 相关事件：touchstart,touchmove,touchend
+        //事件对象：e.originalEvent.touches
+        var touchA, ulA;//touch,ul的初始位置
+        var touchstartTime;
+        $scroll.on('touchstart', function (e) {
+            var ev = e.originalEvent.touches[0];
+            touchA = ev.pageX;
+            $ul.stop();//立即停止已有动画，防止动画叠加
+            ulA = parseInt($ul[0].style.marginLeft);
+            touchstartTime = Date.now();
+        });
+        $scroll.on('touchmove', function (e) {
+            var ev = e.originalEvent.touches[0];
+            var away = ev.pageX - touchA;//移动的位置，（>0表示 → <0表示：←）
+            var next = ulA + away;
+
+            if (next > 0 || -next > W * (LEN - 1)) {
+                //边界减小移动比率
+                next = ulA + away / 3;
+            }
+            $ul[0].style.marginLeft = next + 'px';
+
+
+        });
+        $scroll.on('touchend', function (e) {
+            var ev = e.originalEvent.changedTouches[0];//这个地方touches数组是空的了 改用changeTouches
+            //手指操作结束后 画面调整
+            var left = parseInt($ul[0].style.marginLeft);
+            var page = -parseInt(left / W);
+            var away = ev.pageX - touchA;
+
+            console.info(Date.now() - touchstartTime, 'away', away);
+
+            if (away > 0) {
+                //表示 →
+                console.info('->')
+                if (Date.now() - touchstartTime > 300 || away < 30) {
+                    page++;
+                }
+            } else if (away < 0) {
+                //表示：←
+                console.info('<-')
+                if (Date.now() - touchstartTime < 300 && away < W - 30) {
+                    page++;
+                }
+            }
+
+            if (page > 3) {
+                page = 3;
+            } else if (page < 0) {
+                page = 0
+            }
+
+            $ul.animate({
+                marginLeft: -page * W
+            }, 300);
+        });
+    });
+</script>
+</body>
+</html>

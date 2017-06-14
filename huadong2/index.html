@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>手指上下滑动效果</title>
+    <style>
+        ul {
+            margin-top: 0;
+        }
+
+        .scroll {
+            width: 200px;
+            height: 400px;
+
+            overflow: hidden;
+            position: relative;
+
+            border: 1px solid #ddd;
+            margin: 20px auto;
+        }
+
+        .scroll-contain {
+            padding-right: 10px;
+        }
+
+        .scroll-slider {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 5px;
+            height: 50px;
+            border: 1px solid #fff;
+            background: #ddd;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="scroll">
+    <div class="scroll-contain"></div>
+    <div class="scroll-slider"></div>
+</div>
+<script src="jquery2.1.js"></script>
+<script>
+    $(function () {
+        //一些变量
+        var $scroll = $('.scroll');
+        var $contain = $('.scroll-contain');
+        var $slider = $('.scroll-slider');
+        //各元素高度
+        var elHeight = {
+            contain: $contain.height(),
+            scroll: $scroll.height(),
+            slider: null
+        }
+        elHeight.slider = elHeight.scroll / elHeight.contain * elHeight.scroll;
+        if (elHeight.slider < 50) {
+            elHeight.slider = 50;
+        }
+
+
+        $slider[0].style.height = elHeight.slider + 'px';
+
+        //上下滚动关键变量
+        var touchstartTop, containTop = 0;
+        var touchY, pageY; //touchstart的Y坐标，上一次的pageY属性值用于计算speedY
+        var speedY = 0;//手指离开瞬间的速度
+        var bufInterval;//缓冲动画
+        $scroll.on('touchstart', function (e) {
+            var ev = e.originalEvent.touches[0];
+            touchY = ev.pageY;
+            pageY = ev.pageY;
+            touchstartTop = parseInt($contain[0].style.marginTop || 0);
+            containTop = touchstartTop;
+        });
+        $scroll.on('touchmove', function (e) {
+            var ev = e.originalEvent.touches[0];
+            var away = ev.pageY - pageY;
+            speedY = away * 1.2;
+            move(away);
+            pageY = ev.pageY;
+        });
+        $scroll.on('touchend', function (e) {
+            var ev = e.originalEvent.changedTouches[0];
+            //根据最后瞬间速度 让$contain有个缓冲效果
+            clearInterval(bufInterval);
+            bufInterval = setInterval(function () {
+                speedY = speedY * 0.9;
+                if (move(speedY) == false) {
+                    clearInterval(bufInterval);
+                }
+            }, 20);
+        });
+
+        //根据内容containTop值 更新滚动条的位置
+        function sliderMove(containTop) {
+            var H1 = elHeight.scroll - elHeight.slider;//滚动条 可滚动的高度
+            var H2 = elHeight.contain - elHeight.scroll;//内容 可滚动的高度
+            var sliderTop = H1 / H2 * containTop;
+            $slider[0].style.marginTop = -sliderTop + 'px';
+        }
+
+        //根据——
+        function move(away) {
+            var top = containTop + away;
+            var min = -(elHeight.contain - elHeight.scroll);
+            var max = 0;
+            if (Math.abs(away) < 1) {
+                return false;
+            } else {
+                if (top < min) {
+                    top = min;
+                } else if (top > max) {
+                    top = max;
+                }
+                $contain[0].style.marginTop = top + 'px';
+                containTop = top;
+                sliderMove(top);//移动滑块
+                return true;
+            }
+        }
+    });
+
+    //$contain内填充一点内容 方便演示
+    var contain_html = '<ul>';
+    for (var i = 0; i < 100; i++) {
+        contain_html += '<li>' + i + i + '</li>'
+    }
+    contain_html += '</ul>';
+    $('.scroll-contain').html(contain_html);
+
+    /*禁止微信上默认上下滑动的效果*/
+    document.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+</html>

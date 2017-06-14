@@ -1,36 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>幻灯片</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <div class="box">
-        <div class="side side1">1</div>
-        <div class="side side2">2</div>
-        <div class="side side3">3</div>
-        <div class="side side4">4</div>
-        <div class="side side5">5</div>
-        <div class="side side6">6</div>
+<style id="cssStyle">
+    /*基本结构*/
+    #warp {
+        padding: 0;
+        margin: 20px auto;
+        list-style: none;
+        perspective: 800px;
+    }
+
+    #warp li {
+        padding: 0;
+        margin: 0;
+        float: left;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: .2s all;
+    }
+
+    #warp li span {
+        background: #ccc;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    /*背景图片*/
+    #warp a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #warp a:nth-of-type(1) {
+        background-image: url('img/1.jpg');
+    }
+
+    #warp a:nth-of-type(2) {
+        background-image: url('img/2.jpg');
+    }
+
+    #warp a:nth-of-type(3) {
+        background-image: url('img/3.jpg');
+    }
+
+    #warp a:nth-of-type(4) {
+        background-image: url('img/4.jpg');
+    }
+
+    .pager {
+        display: inline-block;
+        width: 1.8rem;
+        height: 1.8rem;
+        line-height: 1.8rem;
+        text-align: center;
+        background: #ddd;
+        border-radius: 50%;
+        text-indent: -3px;
+    }
+
+    .pager.active {
+        background: indianred;
+        color: #fff;
+    }
+</style>
+<ul id="warp" data-page="1"></ul>
+
+<div id="btns">
+    <button id="pre">上一页</button>
+    <button id="next">下一页</button>
+    <div style="float:right;">
+        <i class="pager active">1</i>
+        <i class="pager">2</i>
+        <i class="pager">3</i>
+        <i class="pager">4</i>
     </div>
-
 </div>
-
-<p>
-<ol>
-    <li>
-<pre>
-    //声明3d空间
-    transform-style: preserve-3d;
-    //景深
-    perspective:500px;
-</pre>
-
-    </li>
-</ol>
-</p>
+<script src="../js/huandengpian.main.js"></script>
 </body>
 </html>
