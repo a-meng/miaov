@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>a星寻路</title>
+    <style>
+        #map {
+            background: gray;
+            margin: 10px auto;
+            overflow: hidden;
+            border-left: 1px solid gray;
+            border-top: 1px solid gray;
+        }
+
+        #map .td {
+            float: left;
+            background: #fff;
+            width: 20px;
+            height: 20px;
+            margin-right: 1px;
+            margin-bottom: 1px;
+            overflow: hidden;
+        }
+    </style>
 </head>
+
 <body>
-<script src='lodash.js'></script>
-<script>
-    
-</script>
+    <div id='map'></div>
+    <div style='text-align:center;'>
+        <button onclick='setElem("start")'>设置起点</button>
+        <button onclick='setElem("end")'> 设置终点</button>
+        <button onclick='setElem("wall")'>设置障碍物</button>
+    </div>
+    <script src='lodash.js'></script>
+    <script src='a-star.js'></script>
+    <script>
+        let actionElem;
+        function setEle(type) {
+            actionElem = type;
+        }
+        (function () {
+            let size = 20;
+            let aStar = new AStar(size);
+            let Dmap = document.querySelector('#map');
+            let html = aStar.map.map(e => `<div class='td' data-p='{x:${e.x},y:${e.y}}'></div>`).join('');
+            Dmap.setAttribute('style', `width:${size * 21}px;height:${size * 21}px`);
+            Dmap.innerHTML = aStar.map.map(e => `<div class='td' data-p='{x:${e.x},y:${e.y}}'></div>`).join('');
+
+
+        })()
+    </script>
 </body>
+
 </html>
