@@ -9,7 +9,7 @@
             this.map = [];
             for (let x = 0; x < size; x++) {
                 for (let y = 0; y < size; y++) {
-                    this.map.push({ x, y, form: null });
+                    this.map.push({ x, y, from: null });
                 }
             }
         }
@@ -24,50 +24,58 @@
         }
 
         set startPoint(point) {
-            this.where({ type: 'start' }, e => type = '');
-            this.where(point, e => type = 'start');
+            this.where({ type: 'start' }, e => e.type = '');
+            this.where(point, e => e.type = 'start');
         }
         get startPoint() {
-            return this.find(e => e.type === 'start');
+            return this.map.find(e => e.type === 'start');
         }
         set endPoint(point) {
-            this.where({ type: 'end' }, e => type = '');
-            this.where(point, e => type = 'end');
+            this.where({ type: 'end' }, e => e.type = '');
+            this.where(point, e => e.type = 'end');
+        }
+        get endPoint() {
+            return this.map.find(e => e.type === 'end');
         }
         //寻路
-        get way() {
-            let { endPoint, startPoint, wall, f } = this;
+        way() {
+            let { endPoint, startPoint, wall, f, findRound, map } = this;
             let closePoints = [...wall], openPoints = [startPoint];
-
+            console.info('开始寻路', startPoint, endPoint);
+            go();
+            return back();
             function go() {
                 //从开放点中取出一个
                 let currPoint = openPoints.shift();
-                if (currPoint === endPoint) return back(closePoints);
+                if (currPoint === endPoint) return ;
                 //放入闭合点中
                 closePoints.push(currPoint);
                 //取当前点周围的点
-                this.findRound(currPoint)
+                findRound(map, currPoint)
                     //过滤已经有的和不能用的
                     .filter(e => [...closePoints, ...openPoints].indexOf(e) === -1)
                     //给点加 估价和 关系属性form 并且放入open集合中
                     .forEach(p => {
                         p.from = currPoint;
-                        p.f = f(p);
+                        p.f = f(p, endPoint, startPoint);
                         openPoints.push(p);
                     });
                 //排序open
                 openPoints.sort((a, b) => a.f - b.f);
                 //递归
-                go()
+                 go();
             }
-            function back(closePoints) {
+
+            function back() {
+                console.info('寻完', closePoints)
                 //从闭合数组中取出路径
                 let path = [];
                 let point = closePoints.pop();
-                while (point != this.startPoint) {
+                while (point !== startPoint) {
                     path.push(point);
-                    let point = closePoints.find(e => e === point.from);
+                    point = closePoints.find(e => e === point.from);
                 }
+                console.info('输出', path)
                 return path;
             }
         }
@@ -80,10 +88,10 @@
             });
             if (item) callback(item);
         }
-        findRound(point) {
+        findRound(map, point) {
             let { x, y } = point;
             let points = [];
-            this.map.forEach(e => {
+            map.forEach(e => {
                 [x - 1, x, x + 1].forEach(xx => {
                     [y - 1, y, y + 1].forEach(yy => {
                         if (e.x == xx && e.y == yy && e !== point) points.push(e);
@@ -93,8 +101,7 @@
             return points;
         }
         //估价函数
-        f(point) {
-            let { startPoint, endPoint } = this;
+        f(point, startPoint, endPoint) {
             let xx = startPoint.x - endPoint.x, yy = startPoint.y - endPoint.y;
             return Math.sqrt(xx * xx + yy * yy)
         }

@@ -6,7 +6,6 @@
     <title>a星寻路</title>
     <style>
         #map {
-            background: gray;
             margin: 10px auto;
             overflow: hidden;
             border-left: 1px solid gray;
@@ -15,12 +14,27 @@
 
         #map .td {
             float: left;
-            background: #fff;
             width: 20px;
             height: 20px;
-            margin-right: 1px;
-            margin-bottom: 1px;
+            border-right: 1px solid gray;
+            border-bottom: 1px solid gray;
             overflow: hidden;
+        }
+
+        #map .td.start {
+            background: blue;
+        }
+
+        #map .td.end {
+            background: red;
+        }
+
+        #map .td.way {
+            background: greenyellow
+        }
+
+        #map .td.wall {
+            background: #ddd;
         }
     </style>
 </head>
@@ -31,24 +45,67 @@
         <button onclick='setElem("start")'>设置起点</button>
         <button onclick='setElem("end")'> 设置终点</button>
         <button onclick='setElem("wall")'>设置障碍物</button>
+        <button onclick='clearPath()'>清空路径</button>
+        <button onclick='clearAll()'>清空所有</button>
+        <button onclick='searchWay()'>寻路</button>
     </div>
     <script src='lodash.js'></script>
+    <script src='jquery2.1.js'></script>
     <script src='a-star.js'></script>
     <script>
-        let actionElem;
-        function setEle(type) {
+        let actionElem = 'start';
+        function setElem(type) {
             actionElem = type;
         }
-        (function () {
-            let size = 20;
-            let aStar = new AStar(size);
-            let Dmap = document.querySelector('#map');
-            let html = aStar.map.map(e => `<div class='td' data-p='{x:${e.x},y:${e.y}}'></div>`).join('');
-            Dmap.setAttribute('style', `width:${size * 21}px;height:${size * 21}px`);
-            Dmap.innerHTML = aStar.map.map(e => `<div class='td' data-p='{x:${e.x},y:${e.y}}'></div>`).join('');
 
+        //地图尺寸
+        let size = 20;
+        //创建地图
+        let aStar = new AStar(size);
+        //生成html
+        let $map = $('#map');
+        let html = aStar.map.map(e => `<div id='td${e.x}-${e.y}' class='td' data-p='{"x":${e.x},"y":${e.y}}'></div>`).join('');
+        $map
+            .css({ width: size * 21, height: size * 21 })
+            .html(html)
+            //设置起点终点 障碍物
+            .on('click', '.td', function () {
+                if (actionElem === 'start' || actionElem === 'end') {
+                    $('.td').removeClass(actionElem);
+                }
 
-        })()
+                $(this).addClass(actionElem);
+            });
+
+        //清空元素
+        function clearAll() {
+            console.info('clearAll')
+            $('.way,.wall,.start,.end').removeClass('way wall start end');
+        }
+        //清空路径
+        function clearPath() {
+            $('.way').removeClass('way');
+        }
+
+        //寻路
+        function searchWay() {
+            let start = $('.start').data('p');
+            let end = $('.end').data('p');
+            let wall = [];
+            $('.wall').each(function(){
+                wall.push($(this).data('p'));
+            });
+            
+            aStar.wall=wall;
+            aStar.startPoint=start;
+            aStar.endPoint=end;
+            //寻路
+            let path=aStar.way();
+            console.info(path)
+            path.forEach(e=>{
+                $(`#td${e.x}-${e.y}`).addClass('way');
+            });
+        }
     </script>
 </body>
 
