@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +16,12 @@
             font: 300 1em/1.8 PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: PingFang SC, Verdana, Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
             font-weight: 100;
             color: #000;
@@ -45,94 +51,87 @@
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="column">
-        <h2>秒味小练习列表</h2>
-        <ol class="list">
-            <li>
-                <a target="_blank" href="fangkuai/index.html">会转动的3D小方块</a>
-            </li>
-            <li>
-                <a target="_blank" href="huandengpian/index.html">3D幻灯片</a>
-            </li>
-            <li>
-                <a target="_blank" href="shanxingdaohang/index.html">扇形导航</a>
-            </li>
-            <li>
-                <a target="_blank" href="zhezhi/index.html">折纸效果的导航</a>
-            </li>
-            <li><a target="_blank" href="zhongbiao/index.html">钟表效果</a></li>
-            <li><a target="_blank" href="huadong/index.html">触摸左右滑屏效果</a></li>
-            <li><a target="_blank" href="huadong2/index.html">触摸上下滑动效果</a></li>
-            <li><a target="_blank" href="huadong3/index.html">触摸左右滑动效果(带下标+无缝+自动切换功能)</a></li>
-            <li><a target="_blank" href="xiangce/index.html">移动端相册小练习</a></li>
-            <li><a target="_blank" href="web1/index.html">移动页面小练习1</a></li>
-            <li><a target="_blank" href="suanfa/star/index.html">a star寻路小练习</a></li>
-        </ol>
-    </div>
-    <div class="column">
-        <h2>其他小练习列表</h2>
-        <ol class="list">
-            <li>
-                <a target="_blank" href="navTree/index.html">好简单的多级导航啊</a>
-            </li>
-            <li>
-                <a target="_blank" href="vue/todoMVC1/index.html">vue的todoMVC练习</a>
-            </li>
-            <li>
-                <a target="_blank" href="vue/todoMVC2/index.html">vue+vuex的todoMVC练习</a>
-            </li>
-        </ol>
-    </div>
+    <div class="container">
+        <div class="column">
+            <h2>秒味小练习列表</h2>
+            <ol class="list">
+                <li><a target="_blank" href="fangkuai/index.html">会转动的3D小方块</a></li>
+                <li><a target="_blank" href="huandengpian/index.html">3D幻灯片</a></li>
+                <li><a target="_blank" href="shanxingdaohang/index.html">扇形导航</a></li>
+                <li><a target="_blank" href="zhezhi/index.html">折纸效果的导航</a></li>
+                <li><a target="_blank" href="zhongbiao/index.html">钟表效果</a></li>
+                <li><a target="_blank" href="huadong/index.html">触摸左右滑屏效果</a></li>
+                <li><a target="_blank" href="huadong2/index.html">触摸上下滑动效果</a></li>
+                <li><a target="_blank" href="huadong3/index.html">触摸左右滑动效果(带下标+无缝+自动切换功能)</a></li>
+                <li><a target="_blank" href="xiangce/index.html">移动端相册小练习</a></li>
+                <li><a target="_blank" href="web1/index.html">移动页面小练习1</a></li>
+                <li><a target="_blank" href="suanfa/star/index.html">a star寻路小练习</a></li>
+            </ol>
+        </div>
+        <div class="column">
+            <h2>其他小练习列表</h2>
+            <ol class="list">
+                <li><a target="_blank" href="navTree/index.html">好简单的多级导航啊</a></li>
+                <li><a target="_blank" href="vue/todoMVC1/index.html">vue的todoMVC练习</a></li>
+                <li><a target="_blank" href="vue/todoMVC2/index.html">vue+vuex的todoMVC练习</a></li>
+            </ol>
+            <h2>算法相关</h2>
+            <ol>
+                <li><a target="_blank" href="suanfa/star/index.html">a星寻路</a></li>
+                <li><a target="_blank" href="suanfa/8X8/index.html">八皇后</a></li>
+            </ol>
+        </div>
 
 
-</div>
-<script src="js/lodash.js"></script>
-<script>
-    //curry工具函数
-    function curry(fun) {
-        let len = fun.length;
-        let args = [];
-        return function wrapper(...arr) {
-            args = args.concat(arr);
-            if (args.length >= len) {
-                //执行最终方法,清空缓存参数
-                let _args = [...args];
-                args = [];
-                return fun.apply(this, _args);
-            } else {
-                //参数还不够
-                return wrapper;
+    </div>
+    <script src="js/lodash.js"></script>
+    <script>
+        //curry工具函数
+        function curry(fun) {
+            let len = fun.length;
+            let args = [];
+            return function wrapper(...arr) {
+                args = args.concat(arr);
+                if (args.length >= len) {
+                    //执行最终方法,清空缓存参数
+                    let _args = [...args];
+                    args = [];
+                    return fun.apply(this, _args);
+                } else {
+                    //参数还不够
+                    return wrapper;
+                }
             }
         }
-    }
-    let add1 = curry((x, y, z) => x + y + z);
-    let add2 = _.curry((x, y, z) => x + y + z);
+        let add1 = curry((x, y, z) => x + y + z);
+        let add2 = _.curry((x, y, z) => x + y + z);
 
-    console.info('add1(1,1,1)', add1(1, 1, 1));
-    console.info('add2(1,1,1)', add2(1, 1, 1));
+        console.info('add1(1,1,1)', add1(1, 1, 1));
+        console.info('add2(1,1,1)', add2(1, 1, 1));
 
-    console.info('add1(1,1)(1)', add1(1, 1)(1));
-    console.info('add2(1,1)(1)', add2(1, 1)(1));
+        console.info('add1(1,1)(1)', add1(1, 1)(1));
+        console.info('add2(1,1)(1)', add2(1, 1)(1));
 
 
-    //curry版 concat,slice,splice (不支持可选参数和参数默认值)
+        //curry版 concat,slice,splice (不支持可选参数和参数默认值)
 
-    let _concat = curry(function (a, b) {
-        return a.concat(b);
-    });
-    let _slice = curry(function (arr, begin, end) {
-        return arr.slice(begin, end);
-    });
-    let _splice = curry(function (arr, start, deleteCount) {
-        return [...arr].splice(start, deleteCount);
-    });
+        let _concat = curry(function (a, b) {
+            return a.concat(b);
+        });
+        let _slice = curry(function (arr, begin, end) {
+            return arr.slice(begin, end);
+        });
+        let _splice = curry(function (arr, start, deleteCount) {
+            return [...arr].splice(start, deleteCount);
+        });
 
-    console.info("_concat(['a'])(['b'])", _concat(['a'])( ['b']));
-    console.info("_slice(['a','b','c','d','e'])(2,4)", _slice(['a', 'b', 'c', 'd', 'e'])( 2, 4));
-    console.info("_splice(['a','b','c'])(1,1)", _splice(['a', 'b', 'c'])(1, 1));
+        console.info("_concat(['a'])(['b'])", _concat(['a'])(['b']));
+        console.info("_slice(['a','b','c','d','e'])(2,4)", _slice(['a', 'b', 'c', 'd', 'e'])(2, 4));
+        console.info("_splice(['a','b','c'])(1,1)", _splice(['a', 'b', 'c'])(1, 1));
 
-</script>
+    </script>
 </body>
+
 </html>
