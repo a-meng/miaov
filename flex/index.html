@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flex 布局练习</title>
+    <style>
+        .flex {
+            background: #ddd;
+        }
+        .item{
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+<h2>flex固定间距等分</h2>
+<style>
+    .demo1 {
+        display: flex;
+    }
+
+    .demo1 .item {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        flex-grow: 1
+    }
+    .demo1 .gutter{
+        width:1rem;
+        flex-grow:0;
+    }
+</style>
+<div class="demo1 flex">
+    <div class="gutter"></div>
+    <div class="item">a</div>
+    <div class="item">b</div>
+    <div class="item">c</div>
+    <div class="gutter"></div>
+</div>
+<h2>flex固定元素大小等分</h2>
+<style>
+    .demo2 {
+        display: flex;
+        justify-content:space-around;
+    }
+    .demo2 .item{
+        width:100px;
+    }
+</style>
+<div class="demo2 flex">
+    <div class="item">a</div>
+    <div class="item">b</div>
+    <div class="item">c</div>
+</div>
+</body>
+</html>
