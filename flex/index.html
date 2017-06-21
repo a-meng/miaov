@@ -4,52 +4,231 @@
     <meta charset="UTF-8">
     <title>flex 布局练习</title>
     <style>
-        .flex {
-            background: #ddd;
+        .layout {
+            display: flex;
         }
-        .item{
+
+        .layout > div {
+            margin: 10px;
+        }
+
+        .flex {
+            display: flex;
+            background: #ddd;
+            width: 200px;
+        }
+
+        .item {
             background: gray;
+            margin: 5px;
+            width: 40px;
+            height: 40px;
         }
     </style>
 </head>
-<body>
-<h2>flex固定间距等分</h2>
-<style>
-    .demo1 {
-        display: flex;
-    }
-
-    .demo1 .item {
-        margin-left: 1rem;
-        margin-right: 1rem;
-        flex-grow: 1
-    }
-    .demo1 .gutter{
-        width:1rem;
-        flex-grow:0;
-    }
-</style>
-<div class="demo1 flex">
-    <div class="gutter"></div>
-    <div class="item">a</div>
-    <div class="item">b</div>
-    <div class="item">c</div>
-    <div class="gutter"></div>
+<body style="padding-bottom:30px;">
+<h1>flex 容器属性</h1>
+<div class="layout" style="display: flex;">
+    <div>
+        <h2>对齐方式</h2>
+        <strong>flex-direction: row;</strong>
+        <div class="flex" style="flex-direction: row;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>flex-direction:row-reverse;</strong>
+        <div class="flex" style="flex-direction: row-reverse;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>flex-direction:column;</strong>
+        <div class="flex" style="flex-direction: column;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>flex-direction:column-reverse;</strong>
+        <div class="flex" style="flex-direction: column-reverse;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+    </div>
+    <div>
+        <h2>换行</h2>
+        <strong>flex-wrap: nowrap;</strong>
+        <div class="flex" style="flex-wrap: nowrap;width:150px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>flex-wrap: wrap;</strong>
+        <div class="flex" style="flex-wrap: wrap;width:150px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>flex-wrap: wrap-reverse;</strong>
+        <div class="flex" style="flex-wrap: wrap-reverse">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+    </div>
+    <div>
+        <h2>对齐细节</h2>
+        <strong>justify-content:flex-start;</strong>
+        <div class="flex" style="justify-content:flex-start;flex-wrap: wrap;width:170px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>justify-content:flex-end;</strong>
+        <div class="flex" style="justify-content:flex-end;flex-wrap: wrap;width:170px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>justify-content:center;</strong>
+        <div class="flex" style="justify-content:center;flex-wrap: wrap;width:170px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>justify-content:space-around;</strong>
+        <div class="flex" style="justify-content: space-around;flex-wrap: wrap;width:170px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+        <strong>justify-content:space-between;</strong>
+        <div class="flex" style="justify-content: space-between;flex-wrap: wrap;width:170px;">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item">c</div>
+            <div class="item">d</div>
+        </div>
+    </div>
+    <div>
+        <h2>侧轴对齐</h2>
+        <strong>align-items: stretch;</strong>
+        <div class="flex" style="height:130px;align-items: stretch;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-items: flex-start;</strong>
+        <div class="flex" style="height:130px;align-items: flex-start;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-items: flex-end;</strong>
+        <div class="flex" style="height:130px;align-items: flex-end;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-items: baseline;</strong>
+        <div class="flex" style="height:130px;align-items: baseline;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;font-size: 2rem;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-items: center;</strong>
+        <div class="flex" style="height:130px;align-items: center;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;font-size: 2rem;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+    </div>
+    <div>
+        <h2>侧轴对齐 (针对多行)</h2>
+        <strong>align-content: stretch;</strong>
+        <div class="flex" style="height:130px;align-content: stretch;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-content: flex-start;</strong>
+        <div class="flex" style="height:130px;align-content: flex-start;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-content: flex-end;</strong>
+        <div class="flex" style="height:130px;align-content: flex-end;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-content: center;</strong>
+        <div class="flex" style="height:130px;align-content: center;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;font-size: 2rem;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-content: space-between;</strong>
+        <div class="flex" style="height:130px;align-content: space-between;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;font-size: 2rem;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+        <strong>align-content: space-around;</strong>
+        <div class="flex" style="height:130px;align-content: space-around;flex-wrap: wrap;width:150px;">
+            <div class="item" style="height:auto;">a</div>
+            <div class="item" style="height:auto;font-size: 2rem;">b</div>
+            <div class="item" style="height:auto;">c</div>
+            <div class="item" style="height:auto;">d</div>
+        </div>
+    </div>
 </div>
-<h2>flex固定元素大小等分</h2>
-<style>
-    .demo2 {
-        display: flex;
-        justify-content:space-around;
-    }
-    .demo2 .item{
-        width:100px;
-    }
-</style>
-<div class="demo2 flex">
-    <div class="item">a</div>
-    <div class="item">b</div>
-    <div class="item">c</div>
+<h1>flex 元素属性</h1>
+<div class="layout" style="display: flex;">
+    <div>
+        <h2>排序</h2>
+        <strong>roder</strong>
+        <div class="flex">
+            <div class="item" style="order:2">a</div>
+            <div class="item" style="order:1">b</div>
+            <div class="item" style="order:4">c</div>
+            <div class="item" style="order:3">d</div>
+        </div>
+    </div>
+    <div>
+        <h2>展开和 收缩</h2>
+        <strong>flex-grow 和 flex-shrink</strong>
+        <div class="flex">
+            <div class="item">a</div>
+            <div class="item">b</div>
+            <div class="item" style="flex-grow:1;">c</div>
+
+        </div>
+    </div>
+
 </div>
 </body>
 </html>
