@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个 全用 flex 做布局的练习</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+
+    <style>
+        /*添加响应式工具类*/
+        @media screen and (max-width: 64em) {
+            .sm-hide {
+                display: none;
+            }
+        }
+        @media screen and (max-width: 64em) {
+            .sm-text-right{
+                text-align: right;
+            }
+        }
+        /* body > main + footer */
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column; /*元素上下排列*/
+        }
+
+        body > main {
+            flex: 1 0 auto; /*main撑开*/
+        }
+
+        body > footer {
+            flex: 0 0 90px; /*固定高度*/
+        }
+
+        /* main > aside + section */
+        main {
+            display: flex;
+        }
+
+        main > aside {
+            flex: 0 1 40px;
+        }
+
+        main > .content {
+            flex: 1 1 auto;
+        }
+
+        /*aside > i*/
+        aside {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around; /*主轴分散对齐*/
+            align-items: center; /*侧轴居中*/
+        }
+
+        /*.content > .music-head + .music-list*/
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content > .music-head {
+            flex: 0 0 280px;
+        }
+
+        .content > .music-list {
+            flex: 1 1 auto;
+        }
+
+        @media screen and (max-width: 64em) {
+            .content > .music-head {
+                flex: 0 0 auto;
+            }
+        }
+
+        /*li > div */
+        .music-list > li {
+            display: flex;
+        }
+
+        .music-list > li > div {
+            flex: 1 1 auto;
+        }
+
+
+        /*.music-head > img + section*/
+        .music-head {
+            display: flex;
+        }
+
+        .music-head > section {
+            flex: 1 1 auto;
+        }
+
+        @media screen and (max-width: 64em) {
+            .music-head {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .music-head > img {
+                width: 150px;
+            }
+        }
+
+        /**/
+        .catty-music {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .catty-music .title{
+            font-size: 1.4em;
+        }
+        @media screen and (max-width: 64em) {
+            .catty-music .title{
+                font-size: 1.1em;
+            }
+            .catty-music{
+                padding-left:0;
+            }
+        }
+        /*footer> music-small + music-controls*/
+        footer {
+            display: flex;
+        }
+
+        footer > .music-small {
+            margin-right: auto;
+        }
+
+        /**/
+        .music-small {
+            display: flex;
+        }
+
+        /**/
+        .music-controls {
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+    </style>
+    <!--
+    关键知识点：
+    1. flex-direction 改变主侧轴的方向
+    2. flex:扩展(默认0) 收缩(默认1) 基础宽度;
+    3. 收缩值设置成0 表示 不会被收缩
+    -->
+</head>
+<body>
+<main>
+    <aside class="sm-hide">
+        <i class="fa fa-bars"></i>
+        <i class="fa fa-home"></i>
+        <i class="fa fa-search"></i>
+        <i class="fa fa-volume-up"></i>
+        <i class="fa fa-user"></i>
+        <i class="fa fa-spotify"></i>
+        <i class="fa fa-cog"></i>
+        <i class="fa fa-soundcloud"></i>
+    </aside>
+    <section class="content">
+        <div class="music-head">
+            <img src="P6180463.jpg">
+            <section class="catty-music">
+                <div>
+                    <div class="title"  style="margin-bottom:.5em;">大标题大标题大标题大标题大标题大标题大标题</div>
+                    <div class="sm-hide" style="margin-bottom:.5em;">小标题 小标题</div>
+                    <div class="sm-hide" style="margin-bottom:.5em;">其它表述信息</div>
+                </div>
+                <div>
+                    <i class="fa fa-play" style="padding: 0 0.7em;"> &nbsp;全部播放</i>
+                    <i class="fa fa-plus" style="padding: 0 0.7em;"> &nbsp;添加</i>
+                    <i class="fa fa-ellipsis-h" style="padding: 0 0.7em;">&nbsp;&nbsp;更多</i>
+                </div>
+            </section>
+        </div>
+        <ul class="music-list">
+            <li>
+                <div>1. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div  class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>2. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div  class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>3. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>4. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>5. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>6. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>7. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+            <li>
+                <div>8. 歌曲名称</div>
+                <div class="sm-hide">作者</div>
+                <div class="sm-text-right">时长</div>
+                <div class="sm-hide">其它信息</div>
+            </li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <div class="music-small">
+        <img class="sm-hide" src="P6180463.jpg" style="width:100px;height:70px;margin-right:1rem;">
+        <div>
+            <p>标题1</p>
+            <p>标题2</p>
+        </div>
+    </div>
+    <div class="music-controls">
+        <i class="fa fa-step-backward"></i>
+        <i class="fa fa-pause"></i>
+        <i class="fa fa-step-forward"></i>
+        <i class="fa fa-rotate-right sm-hide"></i>
+        <i class="fa fa-random sm-hide"></i>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+*{
+    box-sizing: border-box;
+}
+html{
+    font-size: 14px;
+}
+body {
+    margin: 0;
+}
+i{
+    font-style: normal;
+}
+
+footer {
+    padding: 10px;
+    color: #fff;
+    background-color: rgba(61, 100, 158, .9);
+}
+
+aside{
+    background-color: #f2f2f2;
+}
+
+.music-head{
+    padding: 40px;
+    background-color: #4e4e4e;
+    font-weight: 300;
+    color: #fff;
+}
+.music-list{
+    list-style: none;
+    padding: 5px 10px 0;
+    margin:.5rem 0;
+}
+.music-list li{
+    padding:0 1rem;
+}
+.music-list li:nth-child(2n) {
+    background-color: #f2f2f2;
+}
+.music-list li>div{
+    padding:1rem 0;
+}
+
+.catty-music{
+    padding-left:40px;
+    font-size: .9rem;
+}
+
