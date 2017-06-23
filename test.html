@@ -5,29 +5,14 @@
     <title></title>
 </head>
 <body>
-<script src="js/lodash.js"></script>
+
+<script src="pattern.js"></script>
 <script>
-    function flow(funcs) {
-        let result;
-        return function () {
-            result = arguments;
-            funcs.forEach(function (fun) {
-                result = [fun.apply(this, result)];
-            });
-            return result[0];
-        }
-    }
-    function square(n) {
-        return n * n;
-    }
+    var suv1 =CarMaker.factory('SUV');
+    var suv2 =CarMaker.factory('SUV');
+    suv2.drive();
 
-    var addSquare = _.flow([_.add, square]);
-    var addSquare2 = flow([_.add, square]);
 
-    console.info(addSquare(1, 2));
-    console.info(addSquare2(1, 2));
-    //测是提交
 </script>
-
 </body>
 </html>

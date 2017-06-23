@@ -19,7 +19,7 @@ class AStar {
             return wall.find(ee => ee.x === e.x && ee.y === e.y) !== undefined;
         });
     }
-
+    //寻路
     way() {
         let { map, from, to, wall, f } = this;
         //closeArr:墙和走过的点(因为不排除走过的点的话 就会反复在一个点上一直循环) openArr:所有可到达的点(所有有来源的点 可以回溯)
