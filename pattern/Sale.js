@@ -28,7 +28,7 @@ Sale.decorators.offPrice = {
     getPrice(){
         return this.uber.getPrice() / 2;
     }
-}
+};
 
 Sale.decorators.money = {
     getPrice(){

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>没完没了的 tree 练习</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+<h1>vue版的一个可编辑tree练习</h1>
+<div id="app" :class="{mounted:mounted}">
+    <!--树 和选中 id -->
+    <v-tree :tree="tree"></v-tree>
+
+    <div class="editor" contenteditable>{{activeNode.content}}</div>
+</div>
+<script src="vue.js"></script>
+<script src="components/Tree.js"></script>
+<script>
+    (function () {
+        var tree = [
+            {
+                id: '1',
+                name: '测试目录',
+                content: '测试内容',
+                children: [
+                    {
+                        id: '3',
+                        name: '测试目录的子目录',
+                        content: '测试目录的子目录的内容',
+                        children: []
+                    }
+                ]
+            },
+            {
+                id: '2',
+                name: '测试目录2',
+                content: '测试内容2',
+                children: []
+            }
+        ];
+        new Vue({
+            el: '#app',
+            data: {
+                tree: tree,
+                activeNodeId: '',//当前选中的tree
+                openNode: [],
+                mounted: false
+            },
+            computed: {
+                activeNode(){
+                    let id = this.activeNodeId;
+                    if (id) {
+                        return findNodeById(id, tree) || {};
+                    } else {
+                        return {};
+                    }
+
+                }
+            },
+            methods: {
+                chooseNodeHandler(id){
+                    console.info(id);
+                }
+            },
+            mounted(){
+                this.mounted = true;
+            }
+        });
+
+        function findNodeById(id, tree) {
+            let node;
+            go(tree);
+            return node;
+            function go(list) {
+                list.find(e => {
+                    if (e.id === id) {
+                        node = e;
+                        return true;
+                    } else {
+                        if (e.children) go(e.children);
+                    }
+                });
+            }
+        }
+    })();
+</script>
+</body>
+</html>

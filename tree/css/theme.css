@@ -1,0 +1,33 @@
+#app {
+    display: none;
+    min-height: calc(100vh - 90px);
+}
+#app.mounted{
+    display: flex;
+}
+
+.v-tree {
+    width: 400px;
+    margin: 10px;
+    border: 1px solid #ddd;
+}
+
+.v-tree .v-node {
+    padding: 3px;
+}
+
+.v-tree .v-node.hasChildren:after {
+    display: inline-block;
+    content: '[+]';
+    margin-left: 10px;
+}
+
+.v-tree .v-node.hasChildren.active:after {
+    content: '[-]';
+}
+
+.editor {
+    flex: 1 0 auto;
+    margin: 10px;
+    border: 1px solid #ddd;
+}
