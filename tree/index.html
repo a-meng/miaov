@@ -68,21 +68,14 @@
             }
         });
 
+
         function findNodeById(id, tree) {
-            let node;
-            go(tree);
-            return node;
-            function go(list) {
-                list.find(e => {
-                    if (e.id === id) {
-                        node = e;
-                        return true;
-                    } else {
-                        if (e.children) go(e.children);
-                    }
-                });
+            for (let i in tree) {
+                return tree[i].id === id ? tree[i] : findNodeById(id, e.children || []);
             }
         }
+
+        console.info(findNodeById('3', tree), findNodeById('3', tree))
     })();
 </script>
 </body>
