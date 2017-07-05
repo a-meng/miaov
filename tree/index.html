@@ -7,75 +7,67 @@
     <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
-<h1>vue版的一个可编辑tree练习</h1>
+<h1 style="display: inline-block;">vue版的tree练习</h1>
+<small>双击重命名 右键添加删除</small>
 <div id="app" :class="{mounted:mounted}">
     <!--树 和选中 id -->
-    <v-tree :tree="tree"></v-tree>
+    <v-tree :tree="tree" v-model="activeNodeId"></v-tree>
 
-    <div class="editor" contenteditable>{{activeNode.content}}</div>
+    <textarea class="editor" v-if="activeNode" v-model="activeNode.content"></textarea>
 </div>
 <script src="vue.js"></script>
 <script src="components/Tree.js"></script>
 <script>
     (function () {
-        var tree = [
-            {
-                id: '1',
-                name: '测试目录',
-                content: '测试内容',
-                children: [
-                    {
-                        id: '3',
-                        name: '测试目录的子目录',
-                        content: '测试目录的子目录的内容',
-                        children: []
-                    }
-                ]
-            },
-            {
-                id: '2',
-                name: '测试目录2',
-                content: '测试内容2',
-                children: []
-            }
-        ];
         new Vue({
             el: '#app',
             data: {
-                tree: tree,
-                activeNodeId: '',//当前选中的tree
+                tree: [],
+                activeNodeId: '1',
                 openNode: [],
                 mounted: false
+            },
+            watch: {
+                tree: {
+                    handler(tree){
+                        localStorage.setItem('vue-tree', JSON.stringify(tree));
+                    },
+                    deep: true
+                }
             },
             computed: {
                 activeNode(){
                     let id = this.activeNodeId;
-                    if (id) {
-                        return findNodeById(id, tree) || {};
-                    } else {
-                        return {};
-                    }
-
+                    return id ? findNodeById(id, this.tree) : undefined;
                 }
             },
             methods: {
-                chooseNodeHandler(id){
-                    console.info(id);
-                }
+                nodeChooseHandler(id){
+                    this.activeNodeId = id;
+                },
             },
             mounted(){
                 this.mounted = true;
+                let local_tree = localStorage.getItem('vue-tree');
+                this.tree = local_tree ? JSON.parse(local_tree) : [
+                    {
+                        id: '1',
+                        name: '测试目录',
+                        content: '测试内容',
+                    }
+                ];
             }
         });
 
 
         function findNodeById(id, tree) {
             for (let i in tree) {
-                return tree[i].id === id ? tree[i] : findNodeById(id, e.children || []);
+                let item = tree[i];
+                if (item.id === id)return item;
+                let res = findNodeById(id, item.children || []);
+                if (res) return res;
             }
         }
-
-        console.info(findNodeById('3', tree), findNodeById('3', tree))
     })();
 </script>
 </body>
