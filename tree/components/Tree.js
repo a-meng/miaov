@@ -1,4 +1,11 @@
 (function () {
+    //用来处理tree组件数据增删改查的方法
+    class TreeStore {
+        constructor(tree, selectedId) {
+
+        }
+
+    }
     let VNode = {
         name: 'v-node',
         template: `<div  :class="{'v-node':true,hasChildren:hasChildren,active:active}" >
@@ -94,8 +101,9 @@
                 let {nodeId, tree} = this;
                 let node = findNodeById(nodeId, tree);
                 if (node) {
-                    if (node.children === undefined) node.children = []
-                    node.children.append({name: '', content: '', children: []})
+                    if (node.children === undefined) node.children = [];
+                    node.children.push({id: '', name: '', content: '', children: []});
+                    this.controlShow = false;
                 }
             },
             addItemHandler(){
@@ -103,7 +111,8 @@
                 let children = findParentById(nodeId, tree);
                 if (children) {
                     let index = children.findIndex(e => e.id === nodeId);
-                    children.splice(index+1, 0, {name: '', content: '', children: []});
+                    children.splice(index + 1, 0, {name: 'new item', content: '', children: []});
+                    this.controlShow = false;
                 }
             },
             delItemHandler(){
@@ -119,8 +128,7 @@
     });
 
     function findNodeById(id, tree) {
-        for (let i in tree) {
-            let item = tree[i];
+        for (let item of tree) {
             if (item.id === id)return item;
             let res = findNodeById(id, item.children || []);
             if (res) return res;
@@ -128,8 +136,7 @@
     }
 
     function findParentById(id, tree) {
-        for (let i in tree) {
-            let item = tree[i];
+        for (let item of tree) {
             if (item.id === id)return tree;
             let res = findParentById(id, item.children || []);
             if (res) return res;

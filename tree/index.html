@@ -61,10 +61,17 @@
 
 
         function findNodeById(id, tree) {
-            for (let i in tree) {
-                let item = tree[i];
+            for (let item of tree) {
                 if (item.id === id)return item;
                 let res = findNodeById(id, item.children || []);
+                if (res) return res;
+            }
+        }
+
+        function findParentById(id, tree) {
+            for (let item of tree) {
+                if (item.id === id)return tree;
+                let res = findParentById(id, item.children || []);
                 if (res) return res;
             }
         }
