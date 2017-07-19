@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .goods-list {
+            list-style: none;
+            display: flex;
+        }
+
+        .goods-list > li {
+            border: 1px solid #ddd;
+            margin: 5px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <strong>一个购物车实例</strong>
+    <ul class="goods-list">
+        <li v-for="item in all">
+            <img :src="item.src">
+            <strong>{{item.name}}</strong>
+            <div>
+                <span style="color:red;">￥{{item.price.toFixed(2)}}</span>
+                <button @click="addGoods(item)">购买</button>
+            </div>
+
+        </li>
+    </ul>
+    <table>
+        <caption>购物车</caption>
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>价格</th>
+            <th>数量</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr v-for="item in cartGoods">
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>
+                <input type="text" :value="item.num" @input="editGoods($event,item)">
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>总计：{{totalPrice}}</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<script src="../vue.js"></script>
+<script src="../vuex.js"></script>
+<script src="cartStore.js"></script>
+<script>
+    (function () {
+
+        const app = new Vue({
+            el: '#app',
+            data: {
+                all: [
+                    {id: 1, name: '测试产品1', src: '../goods/1.jpg', price: 100},
+                    {id: 2, name: '测试产品2', src: '../goods/2.jpg', price: 110},
+                    {id: 3, name: '测试产品3', src: '../goods/3.jpg', price: 120}
+                ]
+            },
+            computed: {
+                cartGoods(){
+                    console.info('computed.cartGoods')
+                    return cartStore.state.goods;
+                },
+                totalPrice(){
+                    return cartStore.getters.totalPrice;
+                }
+            },
+            methods: {
+                addGoods(item){
+                    cartStore.dispatch('addGoods', item);
+                },
+                editGoods(e, item){
+                    cartStore.dispatch('ediGoods', {
+                        id: item.id,
+                        num: parseInt(e.target.value) || 1
+                    });
+                }
+            }
+        });
+    })();
+
+</script>
+</body>
+</html>
