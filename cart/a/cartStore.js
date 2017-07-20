@@ -15,7 +15,7 @@ const cartStore = new Vuex.Store({
         totalPrice({goods}){
             let price = 0;
             goods.forEach(e => {
-                price += e.price*e.num||0;
+                price += e.price * e.num || 0;
             });
             return price.toFixed(2);
         }
@@ -30,17 +30,14 @@ const cartStore = new Vuex.Store({
             if (has) {
                 has.num++;
             } else {
-                goods.push({...item,num:1});
+                goods.push({...item, num: 1});
             }
         },
         'cart/edi'({goods}, item){
             let has = goods.find(e => e.id === item.id);
-            console.info(has.num,item.num);
             if (has) {
                 has.num = item.num;
-                console.info(has.num)
             }
-
         }
     },
     actions: {
