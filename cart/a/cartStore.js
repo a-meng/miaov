@@ -52,10 +52,6 @@ const cartStore = new Vuex.Store({
         delGoods({state, commit}, id){
             commit('cart/del', id);
             lStore.set('cart', state.goods);
-        },
-        changeNum({state, commit}, item){
-            commit('cart/edit', item);
-            lStore.set('cart', state.goods);
         }
     }
 });

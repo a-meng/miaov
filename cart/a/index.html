@@ -84,7 +84,6 @@
         const app = new Vue({
             el: '#app',
             data: {
-                test: 1,
                 all: [
                     {id: 1, name: '测试产品1', src: '../goods/1.jpg', price: 100},
                     {id: 2, name: '测试产品2', src: '../goods/2.jpg', price: 110},
@@ -111,7 +110,7 @@
                         id: item.id,
                         num: newNum
                     });
-                    e.target.value = newNum;//还是要手动保持一致哒
+                    e.target.value = newNum;//这里要手动保持一致
                 },
                 delGoods(id){
                     cartStore.dispatch('delGoods', id);
