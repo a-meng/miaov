@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文本垂直居中</title>
+    <style>
+
+        .text {
+            background:#ddd;
+            font-size: 20px;
+            line-height: 40px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: green;
+
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="text">
+    默认是基线对齐
+    <span class="dot"></span>
+</div>
+<div class="text" style="vertical-align: middle;">
+    默认是基线对齐
+    <span class="dot"></span> 垂直居中无效
+</div>
+
+<div class="text">
+    默认是基线对齐
+    <span class="dot" style="vertical-align: middle;"></span> 垂直居中无效
+</div>
+<span class="dot"></span>
+<div class="text">单图拿出来 并列设置vertical-align就有效果了</div>
+
+</body>
+</html>

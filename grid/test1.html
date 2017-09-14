@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #app {
+            display: grid;
+            height: 100vh;
+            /*三行三列*/
+            grid-template-columns: 100px 250px 1fr;
+            grid-template-rows: 100px 250px 1fr;
+        }
+
+        #app > div {
+            border: 1px solid #ddd;
+        }
+        #app .teams{
+            grid-row:3;
+            grid-column: 1;
+        }
+        #app .channels{
+            grid-row:3;
+            grid-column: 1;
+        }
+        #app .header{
+
+        }
+        #app .messages{
+
+        }
+        #app .input{
+
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="teams">
+        teams
+    </div>
+    <div class="channels">
+        channels
+    </div>
+    <div class="header">
+        header
+    </div>
+    <div class="messages">
+        messages
+    </div>
+    <div class="input">
+        input
+    </div>
+</div>
+</body>
+</html>
