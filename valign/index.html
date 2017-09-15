@@ -5,41 +5,26 @@
     <title>文本垂直居中</title>
     <style>
 
-        .text {
+        .demo {
             background: #ddd;
-            font-size: 20px;
-            line-height: 40px;
-            display: inline-block;
-            vertical-align: middle;
+            font-size: 30px;
+            line-height: 1.7;
+            margin:20px;
+            float:left;
         }
 
-        .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
+        img {
             background: green;
-
-            border-radius: 50%;
-            vertical-align: middle;
         }
     </style>
 </head>
 <body>
+<p class="demo">
+    <img src="twitter.png" al>图标居中
+</p>
 
-<div class="text">
-    默认是基线对齐
-    <span class="dot"></span>
+<div class="demo" style="">
+    文字居中
 </div>
-<div class="text" style="vertical-align: middle;">
-    默认是基线对齐
-    <span class="dot"></span> 垂直居中无效
-</div>
-
-<div class="text">
-    默认是基线对齐
-    <span class="dot" style="vertical-align: middle;"></span> 垂直居中无效
-</div>
-<span class="dot"></span>
-<div class="text">单独拿出来 并列设置vertical-align就有效果了</div>
 </body>
 </html>
