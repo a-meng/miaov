@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .wrapper {
+            width: 90%;
+            max-width: 960px;
+            margin: 0 auto;
+            /*网格布局*/
+            display: grid;
+            /*12列*/
+            grid-template-columns: repeat(12, 1fr);
+            grid-gap: 20px; /*行列间隔*/
+        }
+
+        .wrapper > div {
+            background: rgb(255, 150, 150);
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div >1</div>
+    <!--占3,4两格-->
+    <div style="grid-column: 3/ 5;">2</div>
+    <div>3</div>
+    <!--占2格 -->
+    <div style="grid-column: auto/span 2;">4<br/>测试高度</div>
+    <div style="grid-column: 8/13;grid-row:1/3">
+        占掉剩余部分<br/>
+        并且 合并下一行
+    </div>
+
+    <div>这个排到下一列了</div>
+</div>
+</body>
+</html>

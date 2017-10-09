@@ -2,60 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>网格布局练习1</title>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
+        .row {
+            background:gray;
+            margin-bottom:.5rem;
+        }
+        .row:after{
+            display: block;
+            content:'';
+            clear:both;
+        }
+        .row > div {
+            float: left;
+            background: #ddd;
+            text-align: center;
+            margin:0 .5%;
         }
 
-        #app {
-            display: grid;
-            height: 100vh;
-            /*三行三列*/
-            grid-template-columns: 100px 250px 1fr;
-            grid-template-rows: 100px 250px 1fr;
+        .col-1 {
+            width: calc(100% * 1 / 12 - 1%)
         }
 
-        #app > div {
-            border: 1px solid #ddd;
+        .col-2 {
+            width: calc(100% * 2 / 12 - 1%)
         }
-        #app .teams{
-            grid-row:3;
-            grid-column: 1;
+        .col-3{
+            width: calc(100% * 3 / 12 - 1%)
         }
-        #app .channels{
-            grid-row:3;
-            grid-column: 1;
+        .col-4{
+            width: calc(100% * 4 / 12 - 1%)
         }
-        #app .header{
+        .col-5{
+            width: calc(100% * 5 / 12 - 1%)
+        }
+        .col-6{
+            width: calc(100% * 6 / 12 - 1%)
+        }
 
-        }
-        #app .messages{
-
-        }
-        #app .input{
-
-        }
     </style>
 </head>
 <body>
-<div id="app">
-    <div class="teams">
-        teams
-    </div>
-    <div class="channels">
-        channels
-    </div>
-    <div class="header">
-        header
-    </div>
-    <div class="messages">
-        messages
-    </div>
-    <div class="input">
-        input
-    </div>
+<p>一个传统12列栅格系统</p>
+<div class="row">
+    <div class="col-1">col-1</div>
+    <div class="col-2">col-2</div>
+    <div class="col-3">col-3</div>
+    <div class="col-6">col-6</div>
 </div>
+<div class="row">
+    <div class="col-2">col-2</div>
+</div>
+<div class="row">
+    <div class="col-3">col-3</div>
+</div>
+<div class="row">
+    <div class="col-4">col-4</div>
+</div>
+<div class="row">
+    <div class="col-5">col-5</div>
+</div>
+<div class="row">
+    <div class="col-6">col-6</div>
+</div>
+
 </body>
 </html>
