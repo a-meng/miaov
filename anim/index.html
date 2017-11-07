@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js动画练习</title>
+</head>
+<style>
+    #box1 {
+        width: 100px;
+        height: 100px;
+        background: green;
+    }
+
+    #box2 {
+        width: 50px;
+        height: 50px;
+        background: cadetblue;
+        margin-left: -50px;
+        opacity: 0;
+    }
+</style>
+<body>
+<div id="box1"></div>
+<div id="box2"></div>
+<script>
+    (async function () {
+        let box1 = document.querySelector('#box1');
+        let box2 = document.querySelector('#box2');
+        //伸长
+        await transition(box1, {height: '500px', background: 'gray'}, 1, 'ease-in-out');
+        //缩回来
+        await transition(box1, {height: '100px', background: 'green'}, 1, 'ease-in-out');
+
+        setTimeout(box2Run, 500);
+
+        //都停下来后 box1再爬一下
+        await  Promise.all([box1Run(), box2Run()]);
+        //动作都停了之后 大方块再向下移动一下
+        if (confirm('要再看一次吗')) {
+            window.location.reload();
+        }
+        //box1往右爬动作
+        async function box1Run() {
+            await transition(box1, {width: '300px', background: 'gray'}, 1, 'ease-in-out');
+            await transition(box1, {'margin-left': '200px', width: '100px', background: 'green'}, 1, 'ease-in-out');
+            await transition(box1, {width: '300px', background: 'gray'}, 1, 'ease-in-out');
+            await transition(box1, {'margin-left': '400px', width: '100px', background: 'green'}, 1, 'ease-in-out');
+        }
+
+        //box2往右爬
+        async function box2Run() {
+            await delay(500);//延迟500毫秒
+            let a = {width: '150px', background: 'gray'};
+            let b = {width: '50px', background: 'cadetblue'};
+            let other = [.7, 'ease-in-out'];
+            //爬5步
+            for (let i = 0; i <= 5; i++) {
+                await transition(box2, {...a, opacity: 1}, ...other);
+                await transition(box2, {...b, 'margin-left': (50 + i * 100) + 'px'}, ...other);
+            }
+        }
+
+    })();
+
+    //transition动画方法
+    function transition(dom, props, speed, easing) {
+        return new Promise((resolve, reject) => {
+            //要有个延迟 不然同步改变样式 就不会触发动画事件了
+            setTimeout(function () {
+                //改变样式
+                for (let k in props) {
+                    dom.style[k] = props[k];
+                }
+                dom.style.transition = `all ${speed}s ${easing}`;
+                function wrapFn() {
+                    resolve(dom);
+                    //清掉事件
+                    dom.removeEventListener('transitionend', wrapFn)
+                    //清掉transition
+                    dom.style.transition = ''
+                }
+
+                dom.addEventListener('transitionend', wrapFn)
+            }, 0)
+        });
+    }
+    //延迟方法
+    function delay(time) {
+        return new Promise(function (resolve) {
+            setTimeout(resolve, time)
+        })
+    }
+
+    //只包装 transitionend 事件
+    function transitionend(dom) {
+        return new Promise(function (resolve, reject) {
+            dom.addEventListener('transitionend', resolve);
+        });
+    }
+
+</script>
+</body>
+</html>
