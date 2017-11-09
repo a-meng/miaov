@@ -24,22 +24,25 @@
 <script src="loadImage.js"></script>
 <script src="TimeLine.js"></script>
 <script>
+    let src_list=['rabbit-big.png', 'miao.png'];
+    Promise.all(loadImage(src_list)).then(function (res) {
+        console.info(res);
+        anim1(src_list[0]);
+        anim2(src_list[1]);
+    });
 
-
-    loadImage(['rabbit-big.png'])[0].then(src => {
+    function anim1(src) {
         let node = document.querySelector('#anim1');
         let step = 0;
-
         node.style.backgroundImage = `url(${src})`;
         let timeLine = new TimeLine(function () {
             node.style.backgroundPosition = `-${step * 175}px 0`;
             step = step >= 5 ? 0 : step + 1;
         }, 1000 / 12);
-
         timeLine.start();
-    });
+    }
 
-    loadImage(['miao.png'])[0].then(src => {
+    function anim2(src) {
         let node = document.querySelector('#anim2');
         let step = 0;
         node.style.backgroundImage = `url(${src})`;
@@ -49,9 +52,9 @@
             node.style.backgroundPosition = `-${colIndex * 130}px -${rowIndex * 130}px`;
             step = step >= 8 ? 0 : step + 1;
         }, 1000 / 6);
-
         timeLine.start();
-    });
+    }
+
 
 </script>
 </body>
