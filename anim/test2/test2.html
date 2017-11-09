@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js动画练习</title>
+    <!--http://www.imooc.com/course/comment/id/659?page=22 练习-->
+</head>
+<body>
+<div id="anim1" style="width:120px;height:90px;background-repeat: no-repeat;"></div>
+<script src="loadImage.js"></script>
+<script src="TimeLine.js"></script>
+<script>
+
+
+    loadImage(['rabbit-big.png'])[0].then(src => {
+        let node = document.querySelector('#anim1');
+        let step = 0;
+
+        node.style.backgroundImage = `url(${src})`;
+        let timeLine = new TimeLine(function () {
+            node.style.backgroundPosition = `-${step * 175}px 0`;
+            step = step >= 5 ? 0 : step + 1;
+        }, 1000/6);
+
+        timeLine.start();
+    });
+
+</script>
+</body>
+</html>
