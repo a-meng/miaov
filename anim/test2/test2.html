@@ -11,50 +11,35 @@
             background-repeat: no-repeat;
         }
 
-        #anim2 {
-            width: 130px;
-            height: 130px;
-            background-repeat: no-repeat;
-        }
     </style>
 </head>
 <body>
 <div id="anim1"></div>
-<div id="anim2"></div>
-<script src="loadImage.js"></script>
+<script src="util.js"></script>
 <script src="TimeLine.js"></script>
 <script>
-    let src_list=['rabbit-big.png', 'miao.png'];
-    Promise.all(loadImage(src_list)).then(function (res) {
-        console.info(res);
-        anim1(src_list[0]);
-        anim2(src_list[1]);
-    });
+    (async function () {
+        //图片的
+        let node1 = $('#anim1')[0];
+        let src1 = 'img/rabbit-big.png';
+        let p1 = [0, 1, 2, 3, 4, 5].map(e => e * 175 + ' ' + 0);
 
-    function anim1(src) {
-        let node = document.querySelector('#anim1');
-        let step = 0;
-        node.style.backgroundImage = `url(${src})`;
-        let timeLine = new TimeLine(function () {
-            node.style.backgroundPosition = `-${step * 175}px 0`;
-            step = step >= 5 ? 0 : step + 1;
-        }, 1000 / 12);
+        //等待图片加载
+        await loadImage(src1);
+
+        //设置图片
+        node1.style.backgroundImage = `url(${src1})`;
+
+        //创建动画
+        let timeLine = new TimeLine([
+            TimeLine.changePosition(node1, p1)  //动画回调1
+        ], 1000 / 12);
+
+        //开始播放
         timeLine.start();
-    }
 
-    function anim2(src) {
-        let node = document.querySelector('#anim2');
-        let step = 0;
-        node.style.backgroundImage = `url(${src})`;
-        let timeLine = new TimeLine(function () {
-            let rowIndex = parseInt(step / 3);
-            let colIndex = (step ) % 3;
-            node.style.backgroundPosition = `-${colIndex * 130}px -${rowIndex * 130}px`;
-            step = step >= 8 ? 0 : step + 1;
-        }, 1000 / 6);
-        timeLine.start();
-    }
 
+    })();
 
 </script>
 </body>
