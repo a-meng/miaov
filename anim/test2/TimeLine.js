@@ -25,7 +25,12 @@ class TimeLine {
         let now = Date.now();
         let step = this.step;
         if (this.nextTick <= now) {
-            this.resolveHandler.forEach(fn => fn.call(this, step));  //挨个调用回调
+            if (typeof this.resolveHandler === 'function') {
+                this.resolveHandler(step);
+            } else if (Array.isArray(this.resolveHandler)) {
+                this.resolveHandler.forEach(fn => fn.call(this, step));  //挨个调用回调
+            }
+
             this.step = step + 1;
             this.nextTick = now + this.interval;//不堆积,只往当前时间后面走
         }
@@ -35,6 +40,7 @@ class TimeLine {
     //一个自动改变图片背景 的 resolveHandler 工具方法
     static changePosition(node, positions) {
         return function (step) {
+            console.info(step,positions.length,step % positions.length)
             let p = positions[step % positions.length].split(' ');
             node.style.backgroundPosition = `-${p[0]}px -${p[1]}px`;
         }

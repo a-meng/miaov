@@ -1,5 +1,7 @@
 {
   "name": "小练习",
-  "version": "0.0.1"
-
+  "version": "0.0.1",
+  "dependencies": {
+    "frame-animation": "^0.2.6"
+  }
 }
