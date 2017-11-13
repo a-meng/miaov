@@ -29,49 +29,76 @@
 <body>
 <div class="game_wrap">
     <div id="anim1" style="left:200px;top:50px;"></div>
+    <button onclick="animStart()">start</button>
+    <button onclick="animPause()">pause</button>
+    <button onclick="animStop()">stop</button>
 </div>
 
-<script src="util.js"></script>
+<script src="loadImage.js"></script>
 <script src="TimeLine.js"></script>
 <script>
     (async function () {
         //图片的
-        let node1 = $('#anim1')[0];
+        let node1 = document.querySelector('#anim1');
         let src1 = 'img/rabbit-big.png';
         let p_left = ["0 373", "175 376", "350 377", "524 377", "699 377", "873 379"];
         let p_right = ["0 854", "174 852", "349 852", "524 852", "698 851", "873 848"];
-        let speed = 60;
 
         //等待图片加载
         await loadImage(src1);
-
         //设置图片
         node1.style.backgroundImage = `url(${src1})`;
-
         //方向
-        let direction = 'left';
+        let direction = '';
 
-        //60的方向动画
-        let anim1 = new TimeLine(function (step) {
-            //用工具方法生成一个 但是只能自己调了
-            let p = direction === 'right' ? p_right : p_left;
-            TimeLine.changePosition(node1, p).call(this, step);
-        }, 60);
+        //帧动画
+        let animL = new TimeLine(changePosition(node1, p_left), 70);
+        let animR = new TimeLine(changePosition(node1, p_right), 70);
 
-        //细腻些的移动动画
-        let anim2 = new TimeLine(function () {
-            //位置移动 函数
+        //移动动画
+        let animMove = new TimeLine(function () {
             let left = parseInt(node1.style.left);
-            if (left < 0) direction = 'right';
-            if (left > 800 - 115) direction = 'left';
-            node1.style.left = (direction === 'right' ? left + 2 : left - 2) + 'px';
+            //位置移动 函数
+            if (direction === 'left') {
+                if (left < 0) {
+                    direction = 'right';
+                    animL.stop();
+                    animR.start();
+                }
+                node1.style.left = (left - 2) + 'px'
+            } else if (direction === 'right') {
+                if (left > 685) {
+                    direction = 'left';
+                    animR.stop();
+                    animL.start();
+                }
+                node1.style.left = (left + 2) + 'px'
+            } else {
+                //最开始
+                direction = 'left';
+                animL.start();
+            }
         }, 20);
 
+        animMove.start();
 
-        anim1.start();
-        anim2.start();//跑起来！
+        window.animPause = function () {
+            animMove.pause();
+        }
+        window.animStart = function () {
+            animMove.start();
+        }
+        window.animStop = function () {
+            animMove.stop();
+        }
     })();
-
+    function changePosition(node, positions) {
+        return function (start_time) {
+            let step = parseInt((Date.now() - start_time) / 70);
+            let p = positions[step % positions.length].split(' ');
+            node.style.backgroundPosition = `-${p[0]}px -${p[1]}px`;
+        }
+    }
 </script>
 </body>
 </html>

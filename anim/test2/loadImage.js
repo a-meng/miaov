@@ -9,7 +9,3 @@ function loadImage(src) {
     });
 }
 
-//document.querySelector简写
-function $(selector) {
-    return document.querySelectorAll(selector)
-}
