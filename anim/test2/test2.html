@@ -49,56 +49,53 @@
         //设置图片
         node1.style.backgroundImage = `url(${src1})`;
         //方向
-        let direction = '';
+        let direction = 'left';
 
         //帧动画
-        let animL = new TimeLine(changePosition(node1, p_left), 70);
-        let animR = new TimeLine(changePosition(node1, p_right), 70);
+        let spirit = new TimeLine({
+            interval: 70,
+            frameCallback(start_time){
+                let step = parseInt((Date.now() - start_time) / 70);
+                let positions = direction === 'left' ? p_left : p_right;
+                let p = positions[step % positions.length].split(' ');
+                node1.style.backgroundPosition = `-${p[0]}px -${p[1]}px`;
+            }
+        });
 
         //移动动画
-        let animMove = new TimeLine(function () {
-            let left = parseInt(node1.style.left);
-            //位置移动 函数
-            if (direction === 'left') {
-                if (left < 0) {
-                    direction = 'right';
-                    animL.stop();
-                    animR.start();
+        let animMove = new TimeLine({
+            interval: 20,
+            frameCallback() {
+                let left = parseInt(node1.style.left);
+                let val = left;
+                //位置移动 函数
+                if (direction === 'left') {
+                    val -= 2;
+                    if (left < 0) direction = 'right';
+                } else if (direction === 'right') {
+                    val += 2;
+                    if (left > 685) direction = 'left';
                 }
-                node1.style.left = (left - 2) + 'px'
-            } else if (direction === 'right') {
-                if (left > 685) {
-                    direction = 'left';
-                    animR.stop();
-                    animL.start();
-                }
-                node1.style.left = (left + 2) + 'px'
-            } else {
-                //最开始
-                direction = 'left';
-                animL.start();
+                node1.style.left=`${val}px`
             }
-        }, 20);
+        });
 
-        animMove.start();
 
         window.animPause = function () {
             animMove.pause();
-        }
+            spirit.pause();
+        };
         window.animStart = function () {
             animMove.start();
+            spirit.start();
         }
         window.animStop = function () {
             animMove.stop();
+            spirit.stop();
         }
+        window.animStart();
     })();
-    function changePosition(node, positions) {
-        return function (start_time) {
-            let step = parseInt((Date.now() - start_time) / 70);
-            let p = positions[step % positions.length].split(' ');
-            node.style.backgroundPosition = `-${p[0]}px -${p[1]}px`;
-        }
-    }
+
 </script>
 </body>
 </html>
