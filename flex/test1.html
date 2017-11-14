@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flex布局练习</title>
+    <style>
+        #app{
+            width:200px;
+            height: 400px;
+
+            display: flex;
+            flex-direction: column;
+        }
+        .header,.footer{
+            flex:0 0 auto;
+            background:gray;
+        }
+        .content{
+            flex:1 1 auto;
+            background:#ddd;
+            overflow-y: auto;
+            position:relative;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        <div class="header">固定的头部</div>
+        <div class="content">
+            <div style='position:absolute;top:0;left:0;height:100%;right:0;'>
+                    内容区
+                    <div style='height:450px;'></div>
+            </div>
+            
+
+        </div>
+        <div class="footer">固定的尾部</div>
+    </div>
+</body>
+</html>

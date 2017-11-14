@@ -1,7 +1,8 @@
 {
-  "name": "小练习",
+  "name": "hehe",
   "version": "0.0.1",
   "dependencies": {
-    "frame-animation": "^0.2.6"
+    "frame-animation": "^0.2.6",
+    "vconsole": "^3.0.0"
   }
 }
