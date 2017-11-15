@@ -1,4 +1,5 @@
 //一个可以反复开关和暂停的帧动画定时器封装
+let timeBtnNode=document.querySelector('#timeBtn');
 class TimeLine {
     constructor({interval = 60, frameCallback = emptyFun()}) {
         //定时器开始,下一帧执行时间,持续时间
@@ -14,7 +15,9 @@ class TimeLine {
 
     start() {
         //next_time=0表示动画是停止状态
+        console.info('timeLine.start(1)')
         if (this.next_time === 0) {
+            console.info('timeLine.start(2)')
             let now = Date.now();
             this.start_time = now - this.duration;
             this.next_time = now;
@@ -49,6 +52,7 @@ class TimeLine {
 
     __fireFrame() {
         let now = Date.now();
+        if(timeBtnNode)timeBtnNode.innerHTML=now;
         this.requestID = window.requestAnimationFrame(this.__fireFrame.bind(this));
         //任务在计时器后面调用 这样 就可以在计时器回调里面停止下一次的任务
         if (this.next_time <= now) {

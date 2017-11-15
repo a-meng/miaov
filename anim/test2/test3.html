@@ -31,6 +31,7 @@
     <div id="anim1" style="left:200px;top:50px;"></div>
     <button onclick="animPause()">暂停</button>
     <button onclick="animStart()">开始</button>
+    <button id="timeBtn"></button>
 </div>
 
 <script src="loadImage.js"></script>
@@ -61,7 +62,7 @@
                     this.next();
                 }
             })
-            //.delay(1000)//暂停一会儿
+            .delay(1000)//暂停一会儿
             .addTask(function (start_time) {
                 //向右转
                 this.next();
@@ -82,10 +83,10 @@
                 this.next(0);//回到第一步
             });
 
-        window.animStart=function () {
+        window.animStart = function () {
             anim.start();
         }
-        window.animPause=function () {
+        window.animPause = function () {
             anim.pause();
         }
     })();

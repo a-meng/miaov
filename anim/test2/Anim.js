@@ -1,10 +1,15 @@
 //多个动作组合动画
+
 class Anim {
     constructor() {
         this.task_list = [];
         this.task_step = 0;
-        this.timeLine = new TimeLine()
-            .intervalFunc(start_time => this.task_list[this.task_step].call(this, start_time));
+        this.timeLine = new TimeLine({
+            interval: 10,
+            frameCallback: start_time => {
+                this.task_list[this.task_step].call(this, start_time)
+            }
+        });
     }
 
     addTask(task) {
@@ -13,7 +18,6 @@ class Anim {
     }
 
     start() {
-        this.timeLine.intervalNum(10);
         this.timeLine.start();
         return this;
     }
@@ -48,7 +52,7 @@ class Anim {
         return this.addTask(function (start_time) {
             this.pause();
             setTimeout(() => {
-                console.info('重启',this);
+                console.info('重启', this);
                 this.start()
             }, time);
         })
