@@ -107,6 +107,25 @@
                 $(`#td${e.x}-${e.y}`).addClass('way');
             });
         }
+
+
+
+        //为了保持一致，最好 添加编辑 都用一个js去完成比较好 但是鉴于你的现实情况 就凑合着写吧
+
+        //搞一个方法 添加 出差明细的方法
+        function addNewItem(){
+            //now函数是es5新的 
+            var n=Date.now();//当前时间戳
+            var  btnIds='btn'+n,typeId='type'+n;
+            //拼html,这个是es6模板语法
+            html=`<i id='typeId'></>`;
+            //插入到最后一行
+            $(list).append(html);
+            //插入之后 dom就有了那些元素  然后绑定你的事件
+            var result=$('#'+typeId),btns=$('.'+btnIds);
+            //。。。后面省略
+        }
+
     </script>
 </body>
 
