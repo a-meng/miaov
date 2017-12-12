@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js动画练习</title>
+    <!--http://www.imooc.com/course/comment/id/659?page=22 练习-->
+    <style>
+        .game_wrap {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+        }
+
+        #anim1 {
+            width: 115px;
+            height: 85px;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 50px;
+            /*border: 1px solid #ddd;*/
+            box-sizing: border-box;
+            /*transition: left .1s, top .1s;*/
+        }
+
+    </style>
+</head>
+<body>
+<div class="game_wrap">
+    <div id="anim1" style="left:200px;top:50px;"></div>
+    <button onclick="animStart()">start</button>
+    <button onclick="animPause()">pause</button>
+    <button onclick="animStop()">stop</button>
+</div>
+
+<script src="loadImage.js"></script>
+<script src="TimeLine.js"></script>
+<script>
+    (async function () {
+        //图片的
+        let node1 = document.querySelector('#anim1');
+        let src1 = 'img/rabbit-big.png';
+        let p_left = ["0 373", "175 376", "350 377", "524 377", "699 377", "873 379"];
+        let p_right = ["0 854", "174 852", "349 852", "524 852", "698 851", "873 848"];
+
+        //等待图片加载
+        await loadImage(src1);
+        //设置图片
+        node1.style.backgroundImage = `url(${src1})`;
+        //方向
+        let direction = 'left';
+
+        //帧动画
+        let spirit = new TimeLine({
+            interval: 70,
+            frameCallback(start_time){
+                let step = parseInt((Date.now() - start_time) / 70);
+                let positions = direction === 'left' ? p_left : p_right;
+                let p = positions[step % positions.length].split(' ');
+                node1.style.backgroundPosition = `-${p[0]}px -${p[1]}px`;
+            }
+        });
+
+        //移动动画
+        let animMove = new TimeLine({
+            interval: 20,
+            frameCallback() {
+                let left = parseInt(node1.style.left);
+                let val = left;
+                //位置移动 函数
+                if (direction === 'left') {
+                    val -= 2;
+                    if (left < 0) direction = 'right';
+                } else if (direction === 'right') {
+                    val += 2;
+                    if (left > 685) direction = 'left';
+                }
+                node1.style.left=`${val}px`
+            }
+        });
+
+
+        window.animPause = function () {
+            animMove.pause();
+            spirit.pause();
+        };
+        window.animStart = function () {
+            animMove.start();
+            spirit.start();
+        }
+        window.animStop = function () {
+            animMove.stop();
+            spirit.stop();
+        }
+        window.animStart();
+    })();
+
+</script>
+</body>
+</html>

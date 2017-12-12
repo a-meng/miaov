@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="gemini-scrollbar.css">
+    <style>
+        #app {
+            margin: 50px;
+            /*width: 200px;*/
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<script src="scrollbar.js"></script>
+
+<div id="app">
+    hello <br/>
+    <button>hello btn</button>
+</div>
+<script>
+    (function () {
+        let app = document.querySelector('#app');
+        app.addEventListener('resize', function (e) {
+            console.info('resize');
+        });
+        setTimeout(function () {
+            let scrollbar = new Scrollbar({element: document.querySelector('#app')});
+            scrollbar.create();
+        }, 1000)
+
+        setTimeout(function () {
+            app.style.width = 300+'px';
+        }, 2000)
+    })()
+
+
+</script>
+</body>
+</html>

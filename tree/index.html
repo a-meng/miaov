@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>没完没了的 tree 练习</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+<h1 style="display: inline-block;">vue版的tree练习</h1>
+<small>双击重命名 右键添加删除</small>
+<div id="app" :class="{mounted:mounted}">
+    <!--树 和选中 id -->
+    <v-tree :tree="tree" v-model="activeNodeId"></v-tree>
+
+    <textarea class="editor" v-if="activeNode" v-model="activeNode.content"></textarea>
+</div>
+<script src="vue.js"></script>
+<script src="components/Tree.js"></script>
+<script>
+    (function () {
+        new Vue({
+            el: '#app',
+            data: {
+                tree: [],
+                activeNodeId: '1',
+                openNode: [],
+                mounted: false
+            },
+            watch: {
+                tree: {
+                    handler(tree){
+                        localStorage.setItem('vue-tree', JSON.stringify(tree));
+                    },
+                    deep: true
+                }
+            },
+            computed: {
+                activeNode(){
+                    let id = this.activeNodeId;
+                    return id ? findNodeById(id, this.tree) : undefined;
+                }
+            },
+            methods: {
+                nodeChooseHandler(id){
+                    this.activeNodeId = id;
+                },
+            },
+            mounted(){
+                this.mounted = true;
+                let local_tree = localStorage.getItem('vue-tree');
+                this.tree = local_tree ? JSON.parse(local_tree) : [
+                    {
+                        id: '1',
+                        name: '测试目录',
+                        content: '测试内容',
+                    }
+                ];
+            }
+        });
+
+
+        function findNodeById(id, tree) {
+            for (let item of tree) {
+                if (item.id === id)return item;
+                let res = findNodeById(id, item.children || []);
+                if (res) return res;
+            }
+        }
+
+        function findParentById(id, tree) {
+            for (let item of tree) {
+                if (item.id === id)return tree;
+                let res = findParentById(id, item.children || []);
+                if (res) return res;
+            }
+        }
+    })();
+</script>
+</body>
+</html>

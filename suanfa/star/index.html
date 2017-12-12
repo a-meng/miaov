@@ -1,13 +1,132 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>a星寻路</title>
+    <style>
+        #map {
+            margin: 10px auto;
+            overflow: hidden;
+            border-left: 1px solid gray;
+            border-top: 1px solid gray;
+        }
+
+        #map .td {
+            float: left;
+            width: 20px;
+            height: 20px;
+            border-right: 1px solid gray;
+            border-bottom: 1px solid gray;
+            overflow: hidden;
+        }
+
+        #map .td.start {
+            background: blue;
+        }
+
+        #map .td.end {
+            background: red;
+        }
+
+        #map .td.way {
+            background: greenyellow
+        }
+
+        #map .td.wall {
+            background: #ddd;
+        }
+    </style>
 </head>
+
 <body>
-<script src='lodash.js'></script>
-<script>
-    
-</script>
+    <div id='map'></div>
+    <div style='text-align:center;'>
+        <button onclick='setElem("start")'>设置起点</button>
+        <button onclick='setElem("end")'> 设置终点</button>
+        <button onclick='setElem("wall")'>设置障碍物</button>
+        <button onclick='clearPath()'>清空路径</button>
+        <button onclick='clearAll()'>清空所有</button>
+        <button onclick='searchWay()'>寻路</button>
+    </div>
+    <script src='../lodash.js'></script>
+    <script src='../jquery2.1.js'></script>
+    <script src='AStar.js'></script>
+    <script>
+        let actionElem = 'start';
+        function setElem(type) {
+            actionElem = type;
+        }
+
+        //地图尺寸
+        let size = 20;
+        //创建地图
+        let aStar = new AStar(size);
+        //生成html
+        let $map = $('#map');
+        let html = aStar.map.map(e => `<div class='td' id='td${e.x}-${e.y}' data-p='{"x":${e.x},"y":${e.y}}'></div>`).join('');
+        $map
+            .css({ width: size * 21, height: size * 21 })
+            .html(html)
+            //设置起点终点 障碍物
+            .on('click', '.td', function () {
+                if (actionElem === 'start' || actionElem === 'end') {
+                    $('.td').removeClass(actionElem);
+                }
+
+                $(this).addClass(actionElem);
+            });
+
+        //清空元素
+        function clearAll() {
+            console.info('clearAll')
+            $('.way,.wall,.start,.end').removeClass('way wall start end');
+        }
+        //清空路径
+        function clearPath() {
+            $('.way').removeClass('way');
+        }
+
+        //寻路
+        function searchWay() {
+            let start = $('.start').data('p');
+            let end = $('.end').data('p');
+            let wall = [];
+            $('.wall').each(function () {
+                wall.push($(this).data('p'));
+            });
+
+            aStar.wallPoints(wall);
+            aStar.fromPoint(start);
+            aStar.toPoint(end);
+            console.info(wall, start, end, aStar)
+            //寻路
+            let path = aStar.way();
+            $('.way').removeClass('way');
+            path.forEach(e => {
+                $(`#td${e.x}-${e.y}`).addClass('way');
+            });
+        }
+
+
+
+        //为了保持一致，最好 添加编辑 都用一个js去完成比较好 但是鉴于你的现实情况 就凑合着写吧
+
+        //搞一个方法 添加 出差明细的方法
+        function addNewItem(){
+            //now函数是es5新的 
+            var n=Date.now();//当前时间戳
+            var  btnIds='btn'+n,typeId='type'+n;
+            //拼html,这个是es6模板语法
+            html=`<i id='typeId'></>`;
+            //插入到最后一行
+            $(list).append(html);
+            //插入之后 dom就有了那些元素  然后绑定你的事件
+            var result=$('#'+typeId),btns=$('.'+btnIds);
+            //。。。后面省略
+        }
+
+    </script>
 </body>
+
 </html>

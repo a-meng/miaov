@@ -2,32 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Title</title>
 </head>
 <body>
-<script src="js/lodash.js"></script>
-<script>
-    function flow(funcs) {
-        let result;
-        return function () {
-            result = arguments;
-            funcs.forEach(function (fun) {
-                result = [fun.apply(this, result)];
-            });
-            return result[0];
-        }
-    }
-    function square(n) {
-        return n * n;
-    }
-
-    var addSquare = _.flow([_.add, square]);
-    var addSquare2 = flow([_.add, square]);
-
-    console.info(addSquare(1, 2));
-    console.info(addSquare2(1, 2));
-</script>
-<!-- 
 
     测试git
  -->
