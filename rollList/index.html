@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ol {
+            border: 1px solid #ddd;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 500px;
+        }
+
+        li {
+            position: relative;
+            height: 40px;
+            margin: 4px;
+        }
+
+        .row {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: darkseagreen;
+            color: #fff;
+            height: 40px;
+            line-height: 40px;
+            text-indent: 40px;
+
+        }
+
+        /*    动画样式*/
+        li {
+            perspective: 500px;
+            transform-style: preserve-3d;
+        }
+
+        .row {
+            transform-origin: center center -20px;
+            transition: all .4s cubic-bezier(0.41, 0.12, 0.6, 1.4);
+        }
+
+        .row-enter {
+            transform: rotateX(90deg);
+        }
+
+       /* .row-enter-active {
+            transition: all .5s ease-in-out;
+        }*/
+
+        .row-enter-to {
+            transform: rotateX(0deg);
+        }
+
+        .row-leave {
+            transform: rotateX(0deg);
+        }
+
+        /*.row-leave-active {
+            transition: all .5s ease-in-out;
+        }*/
+
+        .row-leave-to {
+            transform: rotateX(-90deg);
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <ol>
+        <li v-for=" name in list">
+            <transition name="row">
+                <div class="row" :key="name">{{name}}</div>
+            </transition>
+        </li>
+    </ol>
+    <button style="margin:20px;" @click="updateList()">点击更新</button>
+</div>
+<script src="vue.js"></script>
+<script>
+    let index = 0;
+    const app = new Vue({
+        el: '#app',
+        data: {
+            list: createList()
+        },
+        methods: {
+            updateList() {
+                this.list = createList();
+            },
+            beforeEnter() {
+                console.info('beforeEnter')
+            }
+        }
+    });
+
+
+    function createList() {
+        index++;
+        return ['aaa', 'bbb', 'ccc', 'ddd'].map(e => {
+            return e + index;
+        });
+    }
+</script>
+</body>
+</html>
